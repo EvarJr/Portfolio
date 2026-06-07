@@ -703,8 +703,17 @@ body.dark .dark-toggle:hover { border-color:#fbbf24; }
             <div class="fg"><label>Location</label><input type="text" id="h-location" value="<?= esc($header['location']??'') ?>" placeholder="City, State, Country"></div>
             <div class="fg"><label>LinkedIn</label><input type="text" id="h-linkedin" value="<?= esc($header['linkedin']??'') ?>" placeholder="linkedin.com/in/you"></div>
             <div class="fg"><label>Portfolio URL <span style="font-size:11px;color:var(--muted);font-weight:400;text-transform:none">(shows in resume — make it clickable)</span></label><input type="text" id="h-portfolio-url" value="<?= esc($header['portfolio_url']??'') ?>" placeholder="https://evarsanglitan.up.railway.app"></div>
-          </div>
-          <button class="btn-primary" onclick="saveHeader()"><i class="fas fa-save"></i> Save Header</button>
+              </div>
+
+              <!-- Show photo on resume toggle -->
+              <label style="display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer;padding:12px 14px;background:#f9fafb;border-radius:8px;border:1.5px solid var(--border);margin-bottom:14px">
+                <input type="checkbox" id="h-show-photo" <?= !empty($header['show_photo']) ? 'checked' : '' ?> style="width:16px;height:16px;accent-color:var(--accent)">
+                <div>
+                  <div style="font-weight:500;color:var(--text)">Show photo on resume</div>
+                  <div style="font-size:11px;color:var(--muted);margin-top:2px">Uses your About Me photo. When off, the photo won't appear in either resume format.</div>
+                </div>
+              </label>
+           <button class="btn-primary" onclick="saveHeader()"><i class="fas fa-save"></i> Save Header</button>
         </div>
       </div>
 
@@ -1086,6 +1095,7 @@ async function saveHeader() {
         location: document.getElementById('h-location').value,
         linkedin: document.getElementById('h-linkedin').value,
         portfolio_url: document.getElementById('h-portfolio-url').value.trim(),
+        show_photo: document.getElementById('h-show-photo').checked ? 1 : 0,
     });
     r.success ? toast('Header saved!') : toast(r.message || 'Error', 'err');
 }

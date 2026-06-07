@@ -7,7 +7,7 @@ class AboutModel extends Model {
     'tagline', 'bio', 'photo', 'photo_position',
     'cv_label', 'btn_contact_label', 'btn_contact_email',
     'github', 'linkedin_url', 'twitter', 'facebook',
-    'nav_about', 'nav_resume', 'nav_contact'
+    'nav_about', 'nav_resume', 'nav_contact',
 ];
     public function getAbout(): array {
     return $this->find(1) ?? [

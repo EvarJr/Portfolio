@@ -18,6 +18,7 @@ $routes->get('/',             'AboutController::index');
 $routes->get('about',         'AboutController::index');
 $routes->get('resume',        'AboutController::resume');
 $routes->get('resume/plain',  'ResumeController::index');
+$routes->get('resume/download', 'ResumeDownloadController::index');
 
 // ── AUTH ──────────────────────────────────────────────────────
 $routes->get('login',         'AuthController::index');
