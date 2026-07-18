@@ -576,7 +576,7 @@ a.re-contact-item:hover{color:#fff}
     <div class="cred-row">
       <span class="cred-badge"><i class="fas fa-check-circle"></i> Civil Service Professional Eligible</span>
       <span class="cred-badge dost"><i class="fas fa-award"></i> DOST-JLSS Scholar</span>
-      <span class="cred-badge award"><i class="fas fa-star"></i> Academic Excellence 2022–2025</span>
+      <span class="cred-badge award"><i class="fas fa-star"></i> Academic Excellence 2022–2026</span>
     </div>
     <p class="hero-bio"><?= nl2br(esc($about['bio']??'')) ?></p>
     <div class="hero-btns">
