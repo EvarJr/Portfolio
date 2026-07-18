@@ -24,5 +24,4 @@ jobs:
             **/.git*
             **/.git*/**
             .env
-            writable/**
             tests/**
