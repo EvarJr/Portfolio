@@ -838,7 +838,7 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
     <div class="cred-row">
       <span class="cred-badge"><i class="fas fa-check-circle"></i> Civil Service Professional Eligible</span>
       <span class="cred-badge dost"><i class="fas fa-award"></i> DOST-JLSS Scholar</span>
-      <span class="cred-badge award"><i class="fas fa-star"></i> Academic Excellence 2022–2025</span>
+      <span class="cred-badge award"><i class="fas fa-star"></i> Academic Excellence 2022–2026</span>
     </div>
 
     <p class="hero-bio"><?= nl2br(esc($about['bio']??'')) ?></p>
@@ -848,7 +848,7 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
         <i class="fas fa-file-alt"></i><?= esc($about['cv_label']??'View Resume') ?>
       </a>
       <?php if(!empty($about['btn_contact_email'])): ?>
-      <a href="mailto:<?= esc($about['btn_contact_email']) ?>" class="btn-ghost"><?= esc($about['btn_contact_label']??'Hire Me') ?></a>
+      <a href="#" onclick="window.location.href='mai'+'lto:<?= esc($about['btn_contact_email']) ?>'" class="btn-ghost"><?= esc($about['btn_contact_label']??'Hire Me') ?></a>
       <?php else: ?>
       <a href="#contact" class="btn-ghost"><?= esc($about['btn_contact_label']??'Hire Me') ?></a>
       <?php endif; ?>
@@ -1002,7 +1002,7 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
     <p>Have a project in mind, an opportunity to share, or a problem to solve? I'd love to hear from you.</p>
     <?php $email=$about['btn_contact_email']?:($header['email']??''); ?>
     <?php if(!empty($email)): ?>
-    <a href="mailto:<?= esc($email) ?>" class="btn-email">
+    <a href="#" onclick="window.location.href='mai'+'lto:<?= esc($email) ?>'" class="btn-email">
       <i class="fas fa-envelope"></i><?= esc($email) ?>
     </a>
     <?php endif; ?>

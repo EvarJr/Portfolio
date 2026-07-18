@@ -408,7 +408,7 @@ footer{text-align:center;padding:22px;background:var(--bg);font-size:12px;color:
     <p>Have a project in mind or just want to say hello? I'd love to hear from you.</p>
     <?php $email = $about['btn_contact_email'] ?: ($header['email'] ?? ''); ?>
     <?php if (!empty($email)): ?>
-    <a href="mailto:<?= esc($email) ?>" class="btn-email">
+    <a href="#" onclick="window.location.href='mai'+'lto:<?= esc($email) ?>'" class="btn-email">
       <i class="fas fa-envelope"></i> <?= esc($email) ?>
     </a>
     <?php endif; ?>
