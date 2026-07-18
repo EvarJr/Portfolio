@@ -1,5 +1,4 @@
-cat > .github/workflows/deploy.yml << 'EOF'
-name: 🚀 Deploy CI4 Portfolio to Byet.host
+name: Deploy CI4 Portfolio to Byet.host
 
 on:
   push:
@@ -11,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📥 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: 📤 Deploy via FTP
+      - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ${{ secrets.FTP_SERVER }}
@@ -27,4 +26,3 @@ jobs:
             .env
             writable/**
             tests/**
-EOF
