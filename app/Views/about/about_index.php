@@ -847,8 +847,8 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
       <a href="#" class="btn-primary" onclick="openResumeModal(event)">
         <i class="fas fa-file-alt"></i><?= esc($about['cv_label']??'View Resume') ?>
       </a>
-      <?php if(!empty($about['btn_contact_email'])): ?>
-      <a href="#" onclick="window.location.href='mai'+'lto:<?= esc($about['btn_contact_email']) ?>'" class="btn-ghost"><?= esc($about['btn_contact_label']??'Hire Me') ?></a>
+      <?php if(!empty($contactEmail)): ?>
+      <a href="#" class="btn-ghost" id="btn-hireme">
       <?php else: ?>
       <a href="#contact" class="btn-ghost"><?= esc($about['btn_contact_label']??'Hire Me') ?></a>
       <?php endif; ?>
@@ -859,7 +859,7 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
       <?php if(!empty($about['linkedin_url'])): ?><a href="<?= esc($about['linkedin_url']) ?>" target="_blank" class="social-icon" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a><?php endif; ?>
       <?php if(!empty($about['twitter'])): ?><a href="<?= esc($about['twitter']) ?>" target="_blank" class="social-icon" title="Twitter/X"><i class="fab fa-x-twitter"></i></a><?php endif; ?>
       <?php if(!empty($about['facebook'])): ?><a href="<?= esc($about['facebook']) ?>" target="_blank" class="social-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a><?php endif; ?>
-      <?php if(!empty($header['email'])): ?><a href="mailto:<?= esc($header['email']) ?>" class="social-icon" title="Email"><i class="fas fa-envelope"></i></a><?php endif; ?>
+      <?php if(!empty($header['email'])): ?><a href="#" class="social-icon" id="btn-social-email" title="Email"><i class="fas fa-envelope"></i></a><?php endif; ?>
     </div>
 
     <!-- ANIMATED COUNTERS -->
@@ -1002,7 +1002,7 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
     <p>Have a project in mind, an opportunity to share, or a problem to solve? I'd love to hear from you.</p>
     <?php $email=$about['btn_contact_email']?:($header['email']??''); ?>
     <?php if(!empty($email)): ?>
-    <a href="#" onclick="window.location.href='mai'+'lto:<?= esc($email) ?>'" class="btn-email">
+    <a href="#" class="btn-email" id="btn-contact-email">
       <i class="fas fa-envelope"></i><?= esc($email) ?>
     </a>
     <?php endif; ?>
@@ -1391,6 +1391,42 @@ window.addEventListener('scroll', () => {
     }
   });
 }, { passive: true });
+
+
+// EMAIL BYPASS — decoded at JS runtime, never raw in HTML
+(function(){
+  function decodeEnts(str){
+    var d=document.createElement('textarea');
+    d.innerHTML=str;
+    return d.value;
+  }
+  var ce=decodeEnts('<?= $contactEmailOb ?>');
+  var he=decodeEnts('<?= $headerEmailOb ?>');
+
+  var btnHire=document.getElementById('btn-hireme');
+  if(btnHire&&ce){
+    btnHire.addEventListener('click',function(e){
+      e.preventDefault();
+      window.location.href='mailto:'+ce;
+    });
+  }
+
+  var btnContact=document.getElementById('btn-contact-email');
+  if(btnContact&&ce){
+    btnContact.addEventListener('click',function(e){
+      e.preventDefault();
+      window.location.href='mailto:'+ce;
+    });
+  }
+
+  var btnSocial=document.getElementById('btn-social-email');
+  if(btnSocial&&he){
+    btnSocial.addEventListener('click',function(e){
+      e.preventDefault();
+      window.location.href='mailto:'+he;
+    });
+  }
+})();
 </script>
 </body>
 </html>
