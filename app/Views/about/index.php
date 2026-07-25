@@ -6,6 +6,8 @@
 <title><?= esc($header['name'] ?? 'Portfolio') ?> — <?= esc($about['tagline'] ?? 'Portfolio') ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800;900&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>emailjs.init('ZOuYTOYxO4kTNPnxK');</script>
 <style>
 :root {
   --ink:      #050810;
@@ -481,6 +483,16 @@ a.re-contact-item:hover{color:#fff}
 </style>
 </head>
 <body>
+  
+<?php
+function obfuscateEmail(string $email): string {
+    return implode('', array_map(fn($c) => '&#' . ord($c) . ';', str_split($email)));
+}
+$contactEmail   = $about['btn_contact_email'] ?? ($header['email'] ?? '');
+$headerEmail    = $header['email'] ?? '';
+$contactEmailOb = obfuscateEmail($contactEmail);
+$headerEmailOb  = obfuscateEmail($headerEmail);
+?>
 
 <div id="scroll-progress"></div>
 
@@ -582,7 +594,7 @@ a.re-contact-item:hover{color:#fff}
     <div class="hero-btns">
       <a href="#" class="btn-primary" onclick="openResumeModal(event)"><i class="fas fa-file-alt"></i><?= esc($about['cv_label']??'View Resume') ?></a>
       <?php if(!empty($about['btn_contact_email'])): ?>
-      <a href="/cdn-cgi/l/email-protection#e9d5d6d4c98c9a8ac1cd888b869c9db2ce8b9d87b68a86879d888a9db68c84888085ceb4c0c9d6d7" class="btn-ghost"><?= esc($about['btn_contact_label']??'Hire Me') ?></a>
+      <a href="#" class="btn-ghost" onclick="openContactModal(event)"><?= esc($about['btn_contact_label']??'Hire Me') ?></a>
       <?php else: ?>
       <a href="#contact" class="btn-ghost"><?= esc($about['btn_contact_label']??'Hire Me') ?></a>
       <?php endif; ?>
@@ -592,7 +604,7 @@ a.re-contact-item:hover{color:#fff}
       <?php if(!empty($about['linkedin_url'])): ?><a href="<?= esc($about['linkedin_url']) ?>" target="_blank" class="social-icon" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a><?php endif; ?>
       <?php if(!empty($about['twitter'])): ?><a href="<?= esc($about['twitter']) ?>" target="_blank" class="social-icon" title="Twitter/X"><i class="fab fa-x-twitter"></i></a><?php endif; ?>
       <?php if(!empty($about['facebook'])): ?><a href="<?= esc($about['facebook']) ?>" target="_blank" class="social-icon" title="Facebook"><i class="fab fa-facebook-f"></i></a><?php endif; ?>
-      <?php if(!empty($header['email'])): ?><a href="/cdn-cgi/l/email-protection#714d4e4c5114021259551914101514032a56141c10181d562c58514e4f" class="social-icon" title="Email"><i class="fas fa-envelope"></i></a><?php endif; ?>
+      <?php if(!empty($header['email'])): ?><a href="#" class="social-icon" onclick="openContactModal(event)" title="Email"><i class="fas fa-envelope"></i></a><?php endif; ?>
     </div>
     <div class="counters-row" id="counters">
       <div class="counter-chip"><div class="counter-icon blue"><i class="fas fa-briefcase"></i></div><div><div class="counter-val" data-target="2" data-suffix="">0</div><div class="counter-lbl">OJT Experiences</div></div></div>
@@ -767,7 +779,7 @@ a.re-contact-item:hover{color:#fff}
     <h2>Let's Build <span style="background:var(--g-accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Something</span></h2>
     <p>Have a project in mind, an opportunity to share, or a problem to solve? I'd love to hear from you.</p>
     <?php $email=$about['btn_contact_email']?:($header['email']??''); ?>
-    <?php if(!empty($email)): ?><a href="/cdn-cgi/l/email-protection#fec2c1c3de9b8d9dd6da9b939f9792d7dec1c0" class="btn-email"><i class="fas fa-envelope"></i><?= esc($email) ?></a><?php endif; ?>
+    <?php if(!empty($email)): ?><a href="#" class="btn-email" onclick="openContactModal(event)"><i class="fas fa-envelope"></i> Send Me a Message</a><?php endif; ?>
   </div>
 </section>
 
@@ -785,6 +797,75 @@ a.re-contact-item:hover{color:#fff}
     <?php endif; ?>
   </div>
 </footer>
+
+<!-- CONTACT MODAL -->
+<div class="proj-modal-overlay" id="contactModal" onclick="closeContactModalOnOverlay(event)">
+  <div class="proj-modal" style="max-width:520px">
+    <div class="pm-header">
+      <div class="pm-header-left">
+        <div class="pm-type-tag" style="background:rgba(99,102,241,0.18);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3)">✉ Get In Touch</div>
+        <div class="pm-title">Send Me a Message</div>
+      </div>
+      <button class="pm-close" onclick="closeContactModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="pm-body">
+
+      <!-- SUCCESS -->
+      <div id="contact-success" style="display:none;text-align:center;padding:20px 0">
+        <div style="width:60px;height:60px;border-radius:50%;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;color:#10b981"><i class="fas fa-check"></i></div>
+        <div style="font-family:var(--font-d);font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px">Message Sent!</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.7">Thanks for reaching out! I'll get back to you as soon as possible.</div>
+        <button onclick="closeContactModal()" style="margin-top:20px;padding:10px 24px;background:var(--g-accent);color:#fff;border:none;border-radius:50px;font-family:var(--font-d);font-size:13px;font-weight:700;cursor:pointer">Close</button>
+      </div>
+
+      <!-- LIMIT REACHED -->
+      <div id="contact-limit" style="display:none;text-align:center;padding:20px 0">
+        <div style="width:60px;height:60px;border-radius:50%;background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;color:#fbbf24"><i class="fas fa-exclamation-triangle"></i></div>
+        <div style="font-family:var(--font-d);font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px">Monthly Limit Reached</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.75">My contact form has hit its monthly limit. You can still reach me directly:</div>
+        <div style="margin-top:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(99,102,241,0.2);border-radius:12px;padding:14px 18px;text-align:left">
+          <div style="font-size:12px;color:var(--text-3);font-family:var(--font-m);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Contact Details</div>
+          <div style="font-size:13px;color:var(--text);margin-bottom:6px"><i class="fas fa-envelope" style="color:#6366f1;margin-right:8px"></i>evarsanglitanjr.320@gmail.com</div>
+          <div style="font-size:12px;color:var(--text-2);margin-top:8px">You can also find my contact info in the <strong style="color:#a5b4fc">Resume</strong> above.</div>
+        </div>
+        <button onclick="closeContactModal()" style="margin-top:20px;padding:10px 24px;background:rgba(99,102,241,0.12);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3);border-radius:50px;font-family:var(--font-d);font-size:13px;font-weight:700;cursor:pointer">Close</button>
+      </div>
+
+      <!-- ERROR -->
+      <div id="contact-error" style="display:none;text-align:center;padding:20px 0">
+        <div style="width:60px;height:60px;border-radius:50%;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;color:#ef4444"><i class="fas fa-times-circle"></i></div>
+        <div style="font-family:var(--font-d);font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px">Something Went Wrong</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.7">Failed to send. Please try again or reach me at <strong style="color:#a5b4fc">evarsanglitanjr.320@gmail.com</strong></div>
+        <button onclick="showContactForm()" style="margin-top:20px;padding:10px 24px;background:rgba(99,102,241,0.12);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3);border-radius:50px;font-family:var(--font-d);font-size:13px;font-weight:700;cursor:pointer;margin-right:8px">Try Again</button>
+        <button onclick="closeContactModal()" style="margin-top:20px;padding:10px 24px;background:transparent;color:var(--text-3);border:1px solid var(--border);border-radius:50px;font-family:var(--font-d);font-size:13px;font-weight:700;cursor:pointer">Close</button>
+      </div>
+
+      <!-- FORM -->
+      <div id="contact-form-wrap">
+        <p style="font-size:13px;color:var(--text-2);margin-bottom:20px;line-height:1.7">Fill in the form below and I'll get back to you as soon as possible.</p>
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <div>
+            <label style="font-size:11px;color:var(--text-3);font-family:var(--font-m);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px">Your Name</label>
+            <input type="text" id="contact-name" placeholder="Juan Dela Cruz" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(99,102,241,0.2);border-radius:10px;color:var(--text);font-family:var(--font-b);font-size:13.5px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='rgba(99,102,241,0.5)'" onblur="this.style.borderColor='rgba(99,102,241,0.2)'">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text-3);font-family:var(--font-m);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px">Your Email</label>
+            <input type="email" id="contact-email-input" placeholder="juan@example.com" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(99,102,241,0.2);border-radius:10px;color:var(--text);font-family:var(--font-b);font-size:13.5px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='rgba(99,102,241,0.5)'" onblur="this.style.borderColor='rgba(99,102,241,0.2)'">
+          </div>
+          <div>
+            <label style="font-size:11px;color:var(--text-3);font-family:var(--font-m);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:6px">Message</label>
+            <textarea id="contact-message" placeholder="Hi Evar, I'd like to discuss..." rows="5" style="width:100%;padding:11px 14px;background:rgba(255,255,255,0.04);border:1px solid rgba(99,102,241,0.2);border-radius:10px;color:var(--text);font-family:var(--font-b);font-size:13.5px;outline:none;transition:border-color 0.2s;resize:vertical" onfocus="this.style.borderColor='rgba(99,102,241,0.5)'" onblur="this.style.borderColor='rgba(99,102,241,0.2)'"></textarea>
+          </div>
+          <div id="contact-validation" style="display:none;font-size:12px;color:#f87171;padding:8px 12px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);border-radius:8px"></div>
+          <button id="contact-submit-btn" onclick="submitContactForm()" style="padding:13px;background:var(--g-accent);color:#fff;border:none;border-radius:50px;font-family:var(--font-d);font-size:14px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 18px rgba(99,102,241,0.35);letter-spacing:0.3px">
+            <i class="fas fa-paper-plane" style="margin-right:7px"></i>Send Message
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <!-- PROJECT MODAL -->
 <div class="proj-modal-overlay" id="projModal" onclick="closeProjModalOnOverlay(event)">
@@ -888,6 +969,53 @@ function carouselGo(id,idx){const track=document.getElementById('track-'+id);con
 }
 function carouselNext(id){const carousel=document.getElementById('carousel-'+id);carouselGo(id,parseInt(carousel.dataset.index||0)+1);}
 function carouselPrev(id){const carousel=document.getElementById('carousel-'+id);carouselGo(id,parseInt(carousel.dataset.index||0)-1);}
+
+// CONTACT MODAL
+function openContactModal(e){if(e)e.preventDefault();showContactForm();document.getElementById('contactModal').classList.add('open');document.body.style.overflow='hidden';}
+function closeContactModal(){document.getElementById('contactModal').classList.remove('open');document.body.style.overflow='';setTimeout(showContactForm,300);}
+function closeContactModalOnOverlay(e){if(e.target===document.getElementById('contactModal'))closeContactModal();}
+function showContactForm(){
+  document.getElementById('contact-form-wrap').style.display='block';
+  document.getElementById('contact-success').style.display='none';
+  document.getElementById('contact-limit').style.display='none';
+  document.getElementById('contact-error').style.display='none';
+  document.getElementById('contact-validation').style.display='none';
+  var btn=document.getElementById('contact-submit-btn');
+  btn.disabled=false;
+  btn.innerHTML='<i class="fas fa-paper-plane" style="margin-right:7px"></i>Send Message';
+}
+function submitContactForm(){
+  var name=document.getElementById('contact-name').value.trim();
+  var email=document.getElementById('contact-email-input').value.trim();
+  var message=document.getElementById('contact-message').value.trim();
+  var valDiv=document.getElementById('contact-validation');
+  if(!name){valDiv.textContent='Please enter your name.';valDiv.style.display='block';return;}
+  if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){valDiv.textContent='Please enter a valid email address.';valDiv.style.display='block';return;}
+  if(!message){valDiv.textContent='Please enter a message.';valDiv.style.display='block';return;}
+  valDiv.style.display='none';
+  var btn=document.getElementById('contact-submit-btn');
+  btn.disabled=true;
+  btn.innerHTML='<i class="fas fa-spinner fa-spin" style="margin-right:7px"></i>Sending...';
+  emailjs.send('service_ila4gut','template_7qxz387',{from_name:name,from_email:email,message:message})
+  .then(function(){
+    document.getElementById('contact-form-wrap').style.display='none';
+    document.getElementById('contact-success').style.display='block';
+    document.getElementById('contact-name').value='';
+    document.getElementById('contact-email-input').value='';
+    document.getElementById('contact-message').value='';
+  })
+  .catch(function(error){
+    btn.disabled=false;
+    btn.innerHTML='<i class="fas fa-paper-plane" style="margin-right:7px"></i>Send Message';
+    if(error.status===429||(error.text&&error.text.toLowerCase().includes('limit'))){
+      document.getElementById('contact-form-wrap').style.display='none';
+      document.getElementById('contact-limit').style.display='block';
+    }else{
+      document.getElementById('contact-form-wrap').style.display='none';
+      document.getElementById('contact-error').style.display='block';
+    }
+  });
+}
 </script>
 </body>
 </html>
