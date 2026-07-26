@@ -121,3 +121,11 @@ $routes->get('uploads/projects/(:any)',          'ProjectMediaController::serve/
 $routes->post('api/project/upload-media/(:num)', 'Api\ProjectController::uploadMedia/$1', ['filter'=>'auth']);
 $routes->post('api/project/delete-media/(:num)', 'Api\ProjectController::deleteMedia/$1', ['filter'=>'auth']);
 
+// Portfolio Stack
+$routes->get('admin/portfoliostack',                    'AdminPortfolioStackController::index');
+$routes->post('api/portfoliostack/add',                 'Api\PortfolioStackController::add');
+$routes->post('api/portfoliostack/update/(:num)',        'Api\PortfolioStackController::update/$1');
+$routes->post('api/portfoliostack/delete/(:num)',        'Api\PortfolioStackController::delete/$1');
+$routes->post('api/portfoliostack/reorder',             'Api\PortfolioStackController::reorder');
+$routes->post('api/portfoliostack/upload/(:num)',        'Api\PortfolioStackController::uploadImage/$1');
+

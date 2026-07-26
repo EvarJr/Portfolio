@@ -725,6 +725,124 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
 .proj-card.hidden{display:none}
 .proj-card.showing{opacity:0;transform:scale(0.92) translateY(8px)}
 @media(max-width:768px){.hero-swirl,.hero-swirl-2{display:none}}
+
+
+/* ════ PORTFOLIO TECH STACK ════ */
+.techstack-section{
+  background:var(--ink-2);
+  padding:70px 8vw;
+  position:relative;z-index:2;
+}
+.techstack-header{margin-bottom:48px}
+.techstack-grid{
+  display:flex;flex-wrap:wrap;
+  gap:28px;justify-content:center;
+}
+
+/* ── Each tech item ── */
+.tech-item{
+  position:relative;
+  display:flex;flex-direction:column;
+  align-items:center;gap:10px;
+  cursor:default;
+}
+
+/* ── Logo wrapper ── */
+.tech-logo-wrap{
+  width:78px;height:78px;
+  border-radius:20px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.07);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;padding:12px;
+  transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
+  position:relative;z-index:2;
+}
+.tech-logo-wrap img{
+  width:100%;height:100%;
+  object-fit:contain;
+  filter:grayscale(25%) brightness(0.92);
+  transition:filter 0.35s;
+}
+.tech-item:hover .tech-logo-wrap{
+  transform:translateY(-12px) scale(1.1);
+  border-color:rgba(99,102,241,0.55);
+  background:rgba(99,102,241,0.1);
+  box-shadow:
+    0 0 0 1px rgba(99,102,241,0.3),
+    0 22px 50px rgba(99,102,241,0.28),
+    0 0 40px rgba(139,92,246,0.18);
+}
+.tech-item:hover .tech-logo-wrap img{
+  filter:grayscale(0%) brightness(1);
+}
+
+/* Cloud glow ring */
+.tech-logo-wrap::before{
+  content:'';position:absolute;
+  inset:-6px;border-radius:26px;
+  background:radial-gradient(circle,rgba(99,102,241,0.22) 0%,transparent 70%);
+  opacity:0;transition:opacity 0.35s;z-index:-1;
+}
+.tech-item:hover .tech-logo-wrap::before{opacity:1}
+
+/* Name label */
+.tech-name{
+  font-family:var(--font-m);font-size:10.5px;
+  color:var(--text-3);letter-spacing:0.5px;
+  transition:color 0.3s;white-space:nowrap;
+  text-transform:uppercase;
+}
+.tech-item:hover .tech-name{color:var(--text-2)}
+
+/* ── Floating pills container ── */
+.tech-pills{
+  position:absolute;
+  top:0;left:50%;
+  transform:translateX(-50%);
+  pointer-events:none;
+  z-index:100;
+}
+.tech-item:hover .tech-pills{pointer-events:all}
+
+/* ── Each pill ── */
+.tech-pill{
+  position:absolute;
+  white-space:nowrap;
+  background:linear-gradient(135deg,rgba(15,21,53,0.96),rgba(11,15,30,0.96));
+  border:1px solid rgba(99,102,241,0.45);
+  border-radius:50px;
+  padding:4px 12px;
+  font-size:10.5px;font-weight:600;
+  color:#a5b4fc;
+  font-family:var(--font-d);
+  cursor:pointer;
+  backdrop-filter:blur(14px);
+  box-shadow:
+    0 4px 18px rgba(0,0,0,0.45),
+    0 0 0 1px rgba(99,102,241,0.15);
+  transition:all 0.2s;
+  opacity:0;
+  transform:translateX(-50%) translateY(8px) scale(0.88);
+  animation:none;
+}
+.tech-item:hover .tech-pill{
+  opacity:1;
+  transform:translateX(-50%) translateY(0) scale(1);
+}
+.tech-pill:hover{
+  background:rgba(99,102,241,0.28);
+  border-color:rgba(99,102,241,0.7);
+  color:#fff;
+  transform:translateX(-50%) translateY(-2px) scale(1.06) !important;
+  box-shadow:0 6px 22px rgba(99,102,241,0.3),0 0 0 1px rgba(99,102,241,0.4);
+}
+
+@media(max-width:768px){
+  .techstack-grid{gap:20px}
+  .tech-logo-wrap{width:64px;height:64px;border-radius:16px}
+  .tech-pills{display:none}
+}
 </style>
 </head>
 <body>
@@ -750,6 +868,7 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
   <div class="nav-links">
     <a class="nav-link active" href="#hero">About</a>
     <a class="nav-link" href="#services">Services</a>
+    <a class="nav-link" href="#techstack">Stack</a>
     <a class="nav-link" href="#projects">Projects</a>
     <?php if(!empty($testimonials)): ?><a class="nav-link" href="#testimonials">Testimonials</a><?php endif; ?>
     <a class="nav-link" href="#contact">Contact</a>
@@ -904,6 +1023,62 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
       <div class="svc-icon"><i class="<?= esc($svc['icon']) ?>"></i></div>
       <h3><?= esc($svc['title']) ?></h3>
       <p><?= nl2br(esc($svc['description'])) ?></p>
+    </div>
+    <?php endforeach; ?>
+  </div>
+</div>
+<?php endif; ?>
+
+<!-- ════════ TECH STACK ════════ -->
+<?php if(!empty($techStacks)): ?>
+<?php
+  use App\Models\PortfolioStackModel;
+  $projectMap = [];
+  foreach(($allProjects ?? $projects ?? []) as $p){
+      $projectMap[(int)$p['id']] = $p['title'];
+  }
+?>
+<div class="techstack-section" id="techstack">
+  <div class="techstack-header">
+    <div class="section-eyebrow ey-blue">Tools &amp; Technologies</div>
+    <h2 class="section-title">My Tech <span>Stack</span></h2>
+  </div>
+  <div class="techstack-grid">
+    <?php foreach($techStacks as $i => $stack):
+      $projIds = PortfolioStackModel::decodeProjects($stack['project_ids'] ?? '[]');
+      $validProjs = [];
+      foreach($projIds as $pid){
+        if(isset($projectMap[$pid])) $validProjs[] = ['id' => $pid, 'title' => $projectMap[$pid]];
+      }
+    ?>
+    <div class="tech-item anim d<?= min($i+1,4) ?>">
+
+      <!-- Floating pills -->
+      <?php if(!empty($validProjs)): ?>
+      <div class="tech-pills" id="pills-<?= $stack['id'] ?>">
+        <?php foreach($validProjs as $vi => $vp): ?>
+        <span class="tech-pill"
+          data-proj-id="<?= (int)$vp['id'] ?>"
+          style="transition-delay:<?= $vi * 0.05 ?>s"
+          onclick="openProjectFromStack(<?= (int)$vp['id'] ?>, event)">
+          <?= esc($vp['title']) ?>
+        </span>
+        <?php endforeach; ?>
+      </div>
+      <?php endif; ?>
+
+      <!-- Logo -->
+      <div class="tech-logo-wrap">
+        <?php if(!empty($stack['image_url'])): ?>
+        <img src="<?= esc($stack['image_url']) ?>" alt="<?= esc($stack['name']) ?>" loading="lazy">
+        <?php else: ?>
+        <i class="fas fa-code" style="font-size:26px;color:rgba(99,102,241,0.45)"></i>
+        <?php endif; ?>
+      </div>
+
+      <!-- Name -->
+      <div class="tech-name"><?= esc($stack['name']) ?></div>
+
     </div>
     <?php endforeach; ?>
   </div>
@@ -1466,7 +1641,7 @@ document.getElementById('proj-grid').addEventListener('click',function(e){
 });
 
 // ── NAVBAR ACTIVE ON SCROLL ──
-const navSections = ['hero','services','projects','testimonials','contact'];
+const navSections = ['hero','services','techstack','projects','testimonials','contact'];
 window.addEventListener('scroll', () => {
   const y = window.scrollY + 90;
   navSections.forEach(id => {
@@ -1596,6 +1771,37 @@ function submitContactForm() {
       document.getElementById('contact-error').style.display = 'block';
     }
   });
+}
+
+// ════ TECH STACK — position floating pills in arc ════
+(function positionTechPills(){
+  function layout(){
+    document.querySelectorAll('.tech-item').forEach(function(item){
+      var pills = Array.from(item.querySelectorAll('.tech-pill'));
+      var total = pills.length;
+      if(!total) return;
+
+      var spread  = Math.min(total * 52, 220);
+      var startX  = -(spread / 2);
+      var baseY   = -96; // pixels above center of logo
+
+      pills.forEach(function(pill, i){
+        var t   = total === 1 ? 0.5 : i / (total - 1);
+        var x   = startX + t * spread;
+        // Arc shape — higher in middle
+        var arc = total === 1 ? 0 : -Math.sin(Math.PI * t) * 28;
+        pill.style.left = 'calc(50% + ' + x + 'px)';
+        pill.style.top  = (baseY + arc) + 'px';
+      });
+    });
+  }
+  layout();
+  window.addEventListener('resize', layout);
+})();
+
+function openProjectFromStack(projectId, e){
+  e.stopPropagation();
+  openProject(projectId);
 }
 </script>
 </body>

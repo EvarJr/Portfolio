@@ -513,6 +513,7 @@ $headerEmailOb  = obfuscateEmail($headerEmail);
   <div class="nav-links">
     <a class="nav-link active" href="#hero">About</a>
     <a class="nav-link" href="#services">Services</a>
+    <a class="nav-link" href="#techstack">Stack</a>
     <a class="nav-link" href="#projects">Projects</a>
     <?php if(!empty($testimonials)): ?><a class="nav-link" href="#testimonials">Testimonials</a><?php endif; ?>
     <a class="nav-link" href="#contact">Contact</a>
@@ -526,6 +527,7 @@ $headerEmailOb  = obfuscateEmail($headerEmail);
 <div class="mobile-menu" id="mobileMenu">
   <a class="nav-link active" href="#hero" onclick="closeMobileMenu()"><i class="fas fa-user"></i> About</a>
   <a class="nav-link" href="#services" onclick="closeMobileMenu()"><i class="fas fa-briefcase"></i> Services</a>
+  <a class="nav-link" href="#techstack" onclick="closeMobileMenu()"><i class="fas fa-layer-group"></i> Stack</a>
   <a class="nav-link" href="#projects" onclick="closeMobileMenu()"><i class="fas fa-code"></i> Projects</a>
   <?php if(!empty($testimonials)): ?>
   <a class="nav-link" href="#testimonials" onclick="closeMobileMenu()"><i class="fas fa-quote-left"></i> Testimonials</a>

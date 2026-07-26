@@ -15,6 +15,7 @@ use App\Models\ThesisIsoModel;
 use App\Models\ThesisPhaseModel;
 use App\Models\SummaryModel;
 use App\Models\TechStackModel;
+use App\Models\PortfolioStackModel;
 
 class AboutController extends BaseController
 {
@@ -35,6 +36,11 @@ class AboutController extends BaseController
 
     private function aboutData(): array
     {
+        // Inside aboutData() or index(), add:
+        $portfolioStackModel = new PortfolioStackModel();
+        $techStacks          = $portfolioStackModel->getAllOrdered();
+
+        
         $projects      = (new ProjectModel())->getFeatured();
         $phaseModel    = new ThesisPhaseModel();
         $isoModel      = new ThesisIsoModel();
@@ -69,6 +75,7 @@ class AboutController extends BaseController
             'allThesisPhases' => $allPhases,
             'allIsoScores'    => $allIso,
             'isLoggedIn'      => $this->isLoggedIn(),
+            'techStacks'  => $techStacks,
         ];
     }
 
