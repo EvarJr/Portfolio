@@ -27,7 +27,7 @@ class Filters extends BaseConfig
             // Exclude all api/* routes from CSRF — they handle their own tokens.
             // Without this, CI4 rejects the token and redirects POST → GET,
             // causing "Can't find a route for GET: api/..." 404 errors.
-            'csrf' => ['except' => ['api/*']],
+            'csrf' => ['except' => ['login', 'api/*']],
         ],
         'after' => ['toolbar'],
     ];
