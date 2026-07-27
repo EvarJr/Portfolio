@@ -29,7 +29,7 @@ class Filters extends BaseConfig
             // causing "Can't find a route for GET: api/..." 404 errors.
             'csrf' => ['except' => ['login', 'api/*']],
         ],
-        'after' => ['toolbar'],
+        'after' => [],
     ];
 
     public array $methods = [];
