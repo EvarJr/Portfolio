@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<?php use App\Models\PortfolioStackModel; ?>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -1032,12 +1033,12 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
 <!-- ════════ TECH STACK ════════ -->
 <?php if(!empty($techStacks)): ?>
 <?php
-  use App\Models\PortfolioStackModel;
   $projectMap = [];
   foreach(($allProjects ?? $projects ?? []) as $p){
       $projectMap[(int)$p['id']] = $p['title'];
   }
 ?>
+
 <div class="techstack-section" id="techstack">
   <div class="techstack-header">
     <div class="section-eyebrow ey-blue">Tools &amp; Technologies</div>
@@ -1045,7 +1046,7 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
   </div>
   <div class="techstack-grid">
     <?php foreach($techStacks as $i => $stack):
-      $projIds = PortfolioStackModel::decodeProjects($stack['project_ids'] ?? '[]');
+      $projIds = \App\Models\PortfolioStackModel::decodeProjects($stack['project_ids'] ?? '[]');
       $validProjs = [];
       foreach($projIds as $pid){
         if(isset($projectMap[$pid])) $validProjs[] = ['id' => $pid, 'title' => $projectMap[$pid]];
