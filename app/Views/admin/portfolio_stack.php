@@ -467,12 +467,19 @@ async function saveStack() {
     if(!targetId) {
       // Create first
       const cr = await api('/api/portfoliostack/add', { name, image_url:'', project_ids: projIds });
-      if(!cr.success) {
+        console.log('API response:', JSON.stringify(cr));
+        if(!cr.success) {
         toast(cr.message || 'Error creating entry.', 'err');
         btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> Save';
         return;
-      }
-      targetId = cr.data.id;
+        }
+        // Handle both {data: {id:x}} and {data: x} response structures
+        targetId = cr.data?.id ?? cr.data ?? cr.id ?? null;
+        if(!targetId){
+        toast('Could not get new entry ID.', 'err');
+        btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> Save';
+        return;
+        }
     }
 
     // Upload image
