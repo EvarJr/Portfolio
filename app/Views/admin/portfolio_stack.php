@@ -466,15 +466,13 @@ async function saveStack() {
 
     if(!targetId) {
       // Create first
-      const cr = await api('/api/portfoliostack/add', { name, image_url:'', project_ids: projIds });
-        console.log('API response:', JSON.stringify(cr));
+        const cr = await api('/api/portfoliostack/add', { name, image_url:'', project_ids: projIds });
         if(!cr.success) {
         toast(cr.message || 'Error creating entry.', 'err');
         btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> Save';
         return;
         }
-        // Handle both {data: {id:x}} and {data: x} response structures
-        targetId = cr.data?.id ?? cr.data ?? cr.id ?? null;
+        targetId = cr.id ?? cr.data?.id ?? null;
         if(!targetId){
         toast('Could not get new entry ID.', 'err');
         btn.disabled = false; btn.innerHTML = '<i class="fas fa-check"></i> Save';
@@ -494,7 +492,7 @@ async function saveStack() {
       return;
     }
 
-    finalImageUrl = upData.data.url;
+    finalImageUrl = upData.url ?? upData.data?.url ?? '';
 
     // Now update with full data
     await api('/api/portfoliostack/update/' + targetId, { name, image_url: finalImageUrl, project_ids: projIds });
@@ -510,16 +508,15 @@ async function saveStack() {
     : '/api/portfoliostack/add';
 
   const r = await api(endpoint, { name, image_url: finalImageUrl, project_ids: projIds });
-
-  if(r.success) {
-    toast('Technology saved!');
-    closePanel();
-    setTimeout(() => location.reload(), 800);
-  } else {
-    toast(r.message || 'Error saving.', 'err');
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fas fa-check"></i> Save';
-  }
+    if(r.success) {
+        toast('Technology saved!');
+        closePanel();
+        setTimeout(() => location.reload(), 800);
+    } else {
+        toast(r.message || 'Error saving.', 'err');
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-check"></i> Save';
+        }
 }
 
 // ── DELETE ──
