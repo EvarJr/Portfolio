@@ -265,6 +265,139 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .proj-card.featured{border-color:rgba(139,92,246,0.35);box-shadow:0 0 0 1px rgba(139,92,246,0.12)}
 .proj-card-wrap:not(:hover) .proj-card.featured:hover{border-color:rgba(139,92,246,0.55);box-shadow:0 20px 56px rgba(139,92,246,0.2)}
 
+
+/* ════ FLIP CARD SYSTEM ════ */
+.proj-card{
+  perspective:1200px;
+  cursor:pointer;
+  height:340px;
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+}
+.proj-card-inner{
+  position:relative;
+  width:100%;height:100%;
+  transition:transform 0.7s cubic-bezier(0.4,0.2,0.2,1);
+  transform-style:preserve-3d;
+}
+.proj-card:hover .proj-card-inner,
+.proj-card.flipped .proj-card-inner{
+  transform:rotateY(180deg);
+}
+.proj-card.flipped:hover .proj-card-inner{
+  transform:rotateY(180deg);
+}
+.proj-card-front,
+.proj-card-back{
+  position:absolute;
+  inset:0;
+  border-radius:var(--radius);
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  overflow:hidden;
+}
+
+/* FRONT */
+.proj-card-front{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(99,102,241,0.14);
+  display:flex;flex-direction:column;
+}
+.proj-card.featured .proj-card-front{
+  border-color:rgba(139,92,246,0.35);
+  box-shadow:0 0 0 1px rgba(139,92,246,0.12);
+}
+
+/* BACK */
+.proj-card-back{
+  transform:rotateY(180deg);
+  background:linear-gradient(145deg,#0f1535 0%,#0b0f1e 60%,#1a0a3d 100%);
+  border:1px solid rgba(99,102,241,0.35);
+  box-shadow:0 0 0 1px rgba(99,102,241,0.12),0 20px 56px rgba(0,0,0,0.5);
+  display:flex;flex-direction:column;
+}
+.proj-back-media{
+  width:100%;height:140px;
+  overflow:hidden;position:relative;flex-shrink:0;
+}
+.proj-back-media img{
+  width:100%;height:100%;object-fit:cover;
+  display:block;
+}
+.proj-back-media video{
+  width:100%;height:100%;object-fit:cover;
+  display:block;
+}
+.proj-back-media-placeholder{
+  width:100%;height:140px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.proj-back-content{
+  padding:14px 16px;
+  display:flex;flex-direction:column;
+  gap:8px;flex:1;overflow:hidden;
+}
+.proj-back-type{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;font-weight:700;letter-spacing:0.5px;
+  padding:3px 10px;border-radius:20px;
+  font-family:var(--font-d);align-self:flex-start;
+}
+.proj-back-title{
+  font-family:var(--font-d);font-size:14px;font-weight:700;
+  color:var(--text);letter-spacing:-0.3px;line-height:1.3;
+}
+.proj-back-desc{
+  font-size:11.5px;color:var(--text-2);line-height:1.65;
+  overflow:hidden;display:-webkit-box;
+  -webkit-line-clamp:2;-webkit-box-orient:vertical;
+}
+.proj-back-tech{
+  display:flex;flex-wrap:wrap;gap:4px;
+}
+.proj-back-tech span{
+  font-size:10px;color:#818cf8;
+  background:rgba(99,102,241,0.1);
+  padding:2px 7px;border-radius:4px;
+  font-family:var(--font-m);
+}
+.proj-back-links{
+  display:flex;gap:7px;
+  padding-top:8px;
+  border-top:1px solid rgba(255,255,255,0.06);
+  margin-top:auto;
+}
+.proj-back-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:7px 14px;border-radius:50px;
+  font-size:11.5px;font-weight:600;
+  font-family:var(--font-d);
+  text-decoration:none;transition:all 0.2s;
+  cursor:pointer;border:none;
+}
+.proj-back-btn.view{
+  background:var(--g-accent);color:#fff;
+  box-shadow:0 4px 14px rgba(99,102,241,0.35);
+  flex:1;justify-content:center;
+}
+.proj-back-btn.view:hover{
+  box-shadow:0 6px 20px rgba(99,102,241,0.5);
+  transform:translateY(-1px);
+}
+.proj-back-btn.gh{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.1);
+  color:var(--text-2);
+}
+.proj-back-btn.gh:hover{background:rgba(255,255,255,0.12);color:var(--text)}
+.proj-back-btn.demo{
+  background:rgba(6,182,212,0.12);
+  border:1px solid rgba(6,182,212,0.25);
+  color:#67e8f9;
+}
+.proj-back-btn.demo:hover{background:rgba(6,182,212,0.22);color:#fff}
 /* ── FRONT / BACK FACES ── */
 .proj-face{
   position:absolute;inset:0;
@@ -741,7 +874,10 @@ foreach(($projects ?? []) as $p){
         if(isset($projectMap[$pid])) $validProjs[] = ['id' => $pid, 'title' => $projectMap[$pid]];
       }
     ?>
-    <div class="tech-item anim d<?= min($i+1,4) ?>">
+    <?php $stackProjIds = array_map('intval', $projIds); ?>
+    <div class="tech-item anim d<?= min($i+1,4) ?>"
+        onclick="navigateToStackProjects(<?= json_encode($stackProjIds) ?>, event)"
+        style="cursor:pointer">
       <?php if(!empty($validProjs)): ?>
       <div class="tech-pills" id="pills-<?= $stack['id'] ?>">
         <?php foreach($validProjs as $vi => $vp): ?>
@@ -793,113 +929,110 @@ foreach(($projects ?? []) as $p){
       <h2 class="section-title">Featured <span>Work</span></h2>
     </div>
     <div class="proj-filters">
-      <button class="proj-filter active" onclick="filterProjects('all',this)">All</button>
-      <button class="proj-filter" onclick="filterProjects('thesis',this)">Thesis</button>
-      <button class="proj-filter" onclick="filterProjects('ojt',this)">OJT</button>
-      <button class="proj-filter" onclick="filterProjects('lgu',this)">LGU</button>
-      <button class="proj-filter" onclick="filterProjects('personal',this)">Personal</button>
+      <button class="proj-filter active" onclick="filterProjects('all',this,null)">All</button>
+      <button class="proj-filter" onclick="filterProjects('thesis',this,null)">Thesis</button>
+      <button class="proj-filter" onclick="filterProjects('ojt',this,null)">OJT</button>
+      <button class="proj-filter" onclick="filterProjects('lgu',this,null)">LGU</button>
+      <button class="proj-filter" onclick="filterProjects('personal',this,null)">Personal</button>
     </div>
   </div>
   <div class="proj-grid" id="proj-grid">
+    <div class="proj-grid" id="proj-grid">
     <?php
-    $thumbBg   = ['thesis'=>'proj-thumb-thesis','ojt'=>'proj-thumb-ot','lgu'=>'proj-thumb-lgu','personal'=>'proj-thumb-personal'];
-    $iconColor = ['thesis'=>'thesis','ojt'=>'ot','lgu'=>'lgu','personal'=>'personal'];
-    $tagClass  = ['thesis'=>'tag-thesis','ojt'=>'tag-ot','lgu'=>'tag-lgu','personal'=>'tag-personal'];
-    $tagLabel  = ['thesis'=>'&#9733; Thesis','ojt'=>'OJT','lgu'=>'LGU','personal'=>'Personal'];
-    foreach($projects as $i => $proj):
-        $cat = $proj['category'] ?? 'personal';
-        $projTech = json_decode($proj['tech'] ?? '[]', true) ?: [];
-        $delay = 'd'.min($i+1,4);
-        $mediaRaw = $proj['media_urls'] ?? '';
-        $mediaList = array_values(array_filter(array_map('trim', preg_split('/[\n,]+/', $mediaRaw))));
-        $hasMedia = !empty($mediaList);
+    $thumbBg  =['thesis'=>'proj-thumb-thesis','ojt'=>'proj-thumb-ot','lgu'=>'proj-thumb-lgu','personal'=>'proj-thumb-personal'];
+    $iconColor=['thesis'=>'thesis','ojt'=>'ot','lgu'=>'lgu','personal'=>'personal'];
+    $tagClass =['thesis'=>'tag-thesis','ojt'=>'tag-ot','lgu'=>'tag-lgu','personal'=>'tag-personal'];
+    $tagLabel =['thesis'=>'&#9733; Thesis','ojt'=>'OJT','lgu'=>'LGU','personal'=>'Personal'];
+    $tagStyle =[
+      'thesis' =>'background:rgba(139,92,246,0.28);color:#d8b4fe;border:1px solid rgba(139,92,246,0.3)',
+      'ojt'    =>'background:rgba(6,182,212,0.18);color:#67e8f9;border:1px solid rgba(6,182,212,0.25)',
+      'lgu'    =>'background:rgba(16,185,129,0.16);color:#6ee7b7;border:1px solid rgba(16,185,129,0.22)',
+      'personal'=>'background:rgba(251,191,36,0.16);color:#fde68a;border:1px solid rgba(251,191,36,0.22)',
+    ];
+    foreach($projects as $i=>$proj):
+      $cat      = $proj['category'] ?? 'personal';
+      $projTech = json_decode($proj['tech'] ?? '[]', true) ?: [];
+      $mediaUrls= json_decode($proj['media_urls'] ?? '[]', true) ?: [];
+      $firstMedia = $mediaUrls[0] ?? null;
+      $isVideo  = $firstMedia && preg_match('/\.(mp4|webm|ogg)$/i', $firstMedia);
+      $delay    = 'd'.min($i+1,4);
     ?>
-    <div class="proj-card-wrap <?= $cat==='thesis'?'featured':'' ?> anim <?= $delay ?>" data-category="<?= esc($cat) ?>" data-project="<?= $proj['id'] ?>">
-      <div class="proj-card <?= $cat==='thesis'?'featured':'' ?> <?= $hasMedia?'has-media':'' ?>" style="min-height:290px">
+    <div class="proj-card <?= $cat==='thesis'?'featured':'' ?> anim <?= $delay ?>"
+        data-category="<?= esc($cat) ?>"
+        data-project="<?= $proj['id'] ?>"
+        onclick="handleCardClick(<?= $proj['id'] ?>, event)">
 
-        <!-- ═══ FRONT FACE ═══ -->
-        <div class="proj-face proj-face-front">
+      <div class="proj-card-inner">
+
+        <!-- FRONT -->
+        <div class="proj-card-front">
           <div class="proj-thumb <?= $thumbBg[$cat]??'proj-thumb-personal' ?>">
             <i class="<?= esc($proj['icon']) ?> proj-thumb-icon <?= $iconColor[$cat]??'personal' ?>"></i>
             <span class="proj-type-tag <?= $tagClass[$cat]??'tag-personal' ?>"><?= $tagLabel[$cat]??$cat ?></span>
-            <?php if($hasMedia): ?>
-            <div style="position:absolute;bottom:8px;right:10px;background:rgba(99,102,241,0.85);border-radius:20px;padding:3px 10px;font-size:9.5px;font-weight:700;color:#fff;font-family:var(--font-d);letter-spacing:0.3px;display:flex;align-items:center;gap:4px;backdrop-filter:blur(8px);white-space:nowrap">
-              <i class="fas fa-images" style="font-size:8px"></i><?= count($mediaList) ?> media · hover
-            </div>
-            <?php endif; ?>
           </div>
           <div class="proj-body">
             <div class="proj-title"><?= esc($proj['title']) ?></div>
             <div class="proj-desc"><?= esc($proj['description']) ?></div>
             <?php if(!empty($projTech)): ?>
-            <div class="proj-tech-row"><?php foreach($projTech as $t): ?><span class="proj-tech"><?= esc($t) ?></span><?php endforeach; ?></div>
+            <div class="proj-tech-row">
+              <?php foreach($projTech as $t): ?><span class="proj-tech"><?= esc($t) ?></span><?php endforeach; ?>
+            </div>
             <?php endif; ?>
           </div>
           <div class="proj-footer" style="justify-content:flex-end">
-            <span class="proj-link" style="color:var(--text-3);font-size:11px"><i class="fas fa-arrow-up-right-from-square" style="font-size:9px"></i> Click to explore</span>
+            <span class="proj-link" style="color:var(--text-3);font-size:11px">
+              <i class="fas fa-sync-alt" style="font-size:9px"></i> Hover to flip
+            </span>
           </div>
         </div>
 
-        <!-- ═══ BACK FACE ═══ -->
-        <?php if($hasMedia): ?>
-        <div class="proj-face proj-face-back" onclick="event.stopPropagation(); openProject(<?= $proj['id'] ?>)">
-
-          <!-- Carousel: overflow:hidden clips media -->
-          <div class="proj-carousel" data-index="0" id="carousel-<?= $proj['id'] ?>">
-            <div class="proj-carousel-track" id="track-<?= $proj['id'] ?>">
-              <?php foreach($mediaList as $mi => $mediaUrl):
-                $isItemVideo = preg_match('/\.(mp4|webm|mov|avi)$/i', $mediaUrl);
-                $isItemYt    = strpos($mediaUrl,'youtube.com') !== false || strpos($mediaUrl,'youtu.be') !== false;
-              ?>
-              <div class="proj-carousel-slide">
-                <?php if($isItemYt):
-                  preg_match('/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/', $mediaUrl, $ytm);
-                  $embedUrl = 'https://www.youtube.com/embed/'.$ytm[1].'?autoplay=1&mute=1&loop=1&playlist='.$ytm[1].'&controls=0&modestbranding=1';
-                ?>
-                <iframe src="<?= esc($embedUrl) ?>" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>
-                <?php elseif($isItemVideo): ?>
-                <video src="<?= esc($mediaUrl) ?>" <?= $mi===0?'autoplay':'' ?> muted loop playsinline></video>
-                <?php else: ?>
-                <img src="<?= esc($mediaUrl) ?>" alt="<?= esc($proj['title']) ?>" loading="lazy">
-                <?php endif; ?>
-              </div>
-              <?php endforeach; ?>
-            </div>
+        <!-- BACK -->
+        <div class="proj-card-back">
+          <?php if($firstMedia): ?>
+          <div class="proj-back-media">
+            <?php if($isVideo): ?>
+            <video src="<?= esc($firstMedia) ?>" autoplay muted loop playsinline></video>
+            <?php else: ?>
+            <img src="<?= esc($firstMedia) ?>" alt="<?= esc($proj['title']) ?>">
+            <?php endif; ?>
           </div>
-
-
-
-          <!-- Info strip: title only, no arrows in layout -->
-          <div class="proj-back-info">
-            <div class="proj-back-info-text">
-              <div class="proj-back-title"><?= esc($proj['title']) ?></div>
-              <div class="proj-back-hint">
-                <i class="fas fa-hand-pointer"></i> Click for details
-                <?php if(count($mediaList) > 1): ?>
-                &nbsp;·&nbsp;<span id="slide-counter-<?= $proj['id'] ?>">1/<?= count($mediaList) ?></span>
-                <?php endif; ?>
-              </div>
-            </div>
-          </div>
-
-          <!-- Arrows float over the media area, hidden until hover -->
-          <?php if(count($mediaList) > 1): ?>
-          <div class="proj-carousel-arrows">
-            <button class="proj-carousel-arrow" onclick="event.stopPropagation();carouselPrev(<?= $proj['id'] ?>)" title="Previous">
-              <i class="fas fa-chevron-left"></i>
-            </button>
-            <button class="proj-carousel-arrow" onclick="event.stopPropagation();carouselNext(<?= $proj['id'] ?>)" title="Next">
-              <i class="fas fa-chevron-right"></i>
-            </button>
+          <?php else: ?>
+          <div class="proj-back-media-placeholder <?= $thumbBg[$cat]??'proj-thumb-personal' ?>">
+            <i class="<?= esc($proj['icon']) ?> proj-thumb-icon <?= $iconColor[$cat]??'personal' ?>" style="font-size:32px;opacity:0.5"></i>
           </div>
           <?php endif; ?>
 
-        </div><!-- /.proj-face-back -->
-        <?php endif; ?>
+          <div class="proj-back-content">
+            <span class="proj-back-type" style="<?= $tagStyle[$cat]??$tagStyle['personal'] ?>"><?= $tagLabel[$cat]??$cat ?></span>
+            <div class="proj-back-title"><?= esc($proj['title']) ?></div>
+            <div class="proj-back-desc"><?= esc($proj['description']) ?></div>
+            <?php if(!empty($projTech)): ?>
+            <div class="proj-back-tech">
+              <?php foreach($projTech as $t): ?><span><?= esc($t) ?></span><?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+            <div class="proj-back-links">
+              <button class="proj-back-btn view" onclick="openProject(<?= $proj['id'] ?>);event.stopPropagation()">
+                <i class="fas fa-expand-alt"></i> View Details
+              </button>
+              <?php if(!empty($proj['github_url'])): ?>
+              <a href="<?= esc($proj['github_url']) ?>" target="_blank" class="proj-back-btn gh" onclick="event.stopPropagation()">
+                <i class="fab fa-github"></i>
+              </a>
+              <?php endif; ?>
+              <?php if(!empty($proj['demo_url'])): ?>
+              <a href="<?= esc($proj['demo_url']) ?>" target="_blank" class="proj-back-btn demo" onclick="event.stopPropagation()">
+                <i class="fas fa-external-link-alt"></i>
+              </a>
+              <?php endif; ?>
+            </div>
+          </div>
+        </div>
 
-      </div><!-- /.proj-card -->
-    </div><!-- /.proj-card-wrap -->
+      </div>
+    </div>
     <?php endforeach; ?>
+</div>
   </div>
 </section>
 
@@ -1094,7 +1227,59 @@ function closeResumeModal(){document.getElementById('resumeModal').classList.rem
 document.getElementById('resumeModal').addEventListener('click',function(e){if(e.target===this)closeResumeModal();});
 function printResume(){const size=document.getElementById('printSize')?.value||'A4';const orientation=document.getElementById('printOrientation')?.value||'portrait';const scale=document.getElementById('printScale')?.value||'100';let styleEl=document.getElementById('dynamicPrintStyle');if(!styleEl){styleEl=document.createElement('style');styleEl.id='dynamicPrintStyle';document.head.appendChild(styleEl);}styleEl.textContent=`@media print{@page{size:${size} ${orientation};margin:0;}#resumeContent{transform:scale(${scale/100});transform-origin:top left;width:${10000/scale}%;}}`;document.getElementById('resumeModal').classList.add('open');setTimeout(()=>window.print(),300);}
 function confirmLogout(e){e.preventDefault();if(confirm('Are you sure you want to logout?'))window.location.href='<?= base_url('logout') ?>';}
-function filterProjects(cat,btn){document.querySelectorAll('.proj-filter').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const wraps=document.querySelectorAll('.proj-card-wrap');const toShow=[],toHide=[];wraps.forEach(wrap=>{const visible=cat==='all'||(wrap.dataset.category||'')=== cat;if(visible)toShow.push(wrap);else toHide.push(wrap);});toHide.forEach(el=>{el.classList.remove('showing');el.classList.add('hiding');});setTimeout(()=>{toHide.forEach(el=>{el.classList.add('hidden');el.classList.remove('hiding');});toShow.forEach(el=>{el.classList.remove('hidden');el.classList.add('showing');el.offsetHeight;});toShow.forEach((el,i)=>{setTimeout(()=>{el.classList.remove('showing');},i*60);});},280);}
+function filterProjects(cat, btn, autoFlipIds){
+  // Update active filter button
+  document.querySelectorAll('.proj-filter').forEach(function(b){
+    b.classList.remove('active');
+  });
+  if(btn) btn.classList.add('active');
+
+  var cards = document.querySelectorAll('.proj-card');
+  var toShow = [], toHide = [];
+
+  // Reset all flipped cards first
+  cards.forEach(function(card){
+    card.classList.remove('flipped');
+  });
+
+  cards.forEach(function(card){
+    var visible = cat === 'all' || (card.dataset.category||'').includes(cat);
+    if(visible) toShow.push(card); else toHide.push(card);
+  });
+
+  toHide.forEach(function(card){
+    card.classList.remove('showing');
+    card.classList.add('hiding');
+  });
+
+  setTimeout(function(){
+    toHide.forEach(function(card){
+      card.classList.add('hidden');
+      card.classList.remove('hiding');
+    });
+    toShow.forEach(function(card){
+      card.classList.remove('hidden');
+      card.classList.add('showing');
+      card.offsetHeight;
+    });
+    toShow.forEach(function(card, i){
+      setTimeout(function(){ card.classList.remove('showing'); }, i * 60);
+    });
+
+    // Auto-flip matching cards with stagger
+    if(autoFlipIds && autoFlipIds.length > 0){
+      var matchingCards = toShow.filter(function(card){
+        return autoFlipIds.includes(parseInt(card.dataset.project));
+      });
+      matchingCards.forEach(function(card, i){
+        setTimeout(function(){
+          card.classList.add('flipped');
+        }, i * 150 + 400);
+      });
+    }
+  }, 280);
+}
+
 const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;if(entry.target.classList.contains('anim')){entry.target.style.animationPlayState='running';}if(entry.target.id==='counters'){entry.target.querySelectorAll('.counter-val[data-target]').forEach(el=>{const target=parseInt(el.dataset.target);const suffix=el.dataset.suffix||'';let start=0;const step=(timestamp)=>{if(!start)start=timestamp;const progress=Math.min((timestamp-start)/1400,1);const ease=1-Math.pow(1-progress,3);el.textContent=Math.round(ease*target)+suffix;if(progress<1)requestAnimationFrame(step);};requestAnimationFrame(step);});}observer.unobserve(entry.target);});},{threshold:0.15});
 document.querySelectorAll('.anim').forEach(el=>{el.style.animationPlayState='paused';observer.observe(el);});
 const countersEl=document.getElementById('counters');if(countersEl)observer.observe(countersEl);
@@ -1196,7 +1381,65 @@ function submitContactForm(){
 
 function openProjectFromStack(projectId, e){
   e.stopPropagation();
-  openProject(projectId);
+
+  // Get all project IDs linked to this tech item
+  var pill     = e.currentTarget;
+  var techItem = pill.closest('.tech-item');
+  var allPills = techItem.querySelectorAll('.tech-pill');
+  var linkedIds = [];
+  allPills.forEach(function(p){
+    linkedIds.push(parseInt(p.dataset.projId));
+  });
+
+  // Scroll to projects
+  var projSection = document.getElementById('projects');
+  if(projSection){
+    projSection.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  // Filter and flip
+  setTimeout(function(){
+    filterProjects('all', document.querySelector('.proj-filter'), linkedIds);
+  }, 700);
+}
+
+function handleCardClick(projectId, e){
+  // Don't intercept clicks on buttons/links inside card
+  if(e.target.closest('a') || e.target.closest('button')) return;
+
+  var card = e.currentTarget;
+
+  // If card is flipped — open project modal
+  if(card.classList.contains('flipped')){
+    openProject(projectId);
+    return;
+  }
+
+  // If card is not flipped — flip it (hover handles unflip on mouseout)
+  // For touch devices, toggle flip
+  card.classList.add('flipped');
+}
+
+function navigateToStackProjects(projectIds, e){
+  // Don't trigger if clicking a pill
+  if(e.target.closest('.tech-pill')) return;
+  if(!projectIds || !projectIds.length) return;
+
+  // Reset ALL cards flip state first
+  document.querySelectorAll('.proj-card').forEach(function(card){
+    card.classList.remove('flipped');
+  });
+
+  // Scroll to projects section
+  var projSection = document.getElementById('projects');
+  if(projSection){
+    projSection.scrollIntoView({ behavior:'smooth', block:'start' });
+  }
+
+  // After scroll, show all cards then auto-flip matching ones
+  setTimeout(function(){
+    filterProjects('all', document.querySelector('.proj-filter'), projectIds);
+  }, 700);
 }
 </script>
 </body>
