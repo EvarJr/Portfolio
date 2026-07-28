@@ -450,6 +450,7 @@ body.dark .dark-toggle:hover { border-color:#fbbf24; }
       <a class="nav-link" onclick="scrollToCard('c-resume-collection')"><i class="fas fa-layer-group"></i>Resume Collection</a>
       <div class="sb-label">Portfolio</div>
       <a class="nav-link" href="<?= base_url('admin/projects') ?>"><i class="fas fa-briefcase"></i>Featured Work</a>
+      <a class="nav-link" href="<?= base_url('admin/portfoliostack') ?>"><i class="fas fa-layer-group"></i>Portfolio Stack</a>
       <div class="sb-label">About Me Page</div>
       <a class="nav-link" onclick="scrollToCard('c-about')"><i class="fas fa-user-circle"></i>About Info</a>
       <a class="nav-link" onclick="scrollToCard('c-services')"><i class="fas fa-th-large"></i>What I Do</a>
