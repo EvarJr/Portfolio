@@ -706,8 +706,8 @@ $headerEmailOb  = obfuscateEmail($headerEmail);
     <div class="hero-stat hero-stat-2">
       <div class="s-val">CS</div>
       <div class="s-lbl">Scholar</div>
-    </div>
-  </div> -->
+    </div> -->
+  </div>
 
   <div class="hero-text">
     <div class="hero-mono">Full-Stack Web Developer</div>
