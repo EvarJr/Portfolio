@@ -185,12 +185,24 @@
   --photo-frame-bg:    linear-gradient(145deg,rgba(99,102,241,0.14),rgba(139,92,246,0.06));
   --hero-badge-bg:     linear-gradient(135deg,#dde3f7,#e5dcf5);
   --hero-stat-bg:      rgba(226,230,247,0.92);
-  .hero,.projects-section,.testi-section,.contact-section,.proj-modal,.modal-overlay .modal-box{
-  --text: #f1f5f9;
-  --text-2: #cbd5e1;
-  --text-3: #94a3b8;
+  
 }
-}
+
+.hero,.projects-section,.testi-section,.contact-section,.proj-modal,.modal-overlay .modal-box{
+    --text: #f1f5f9;
+    --text-2: #cbd5e1;
+    --text-3: #94a3b8;
+  }
+  [data-theme="light"] .hero,
+  [data-theme="light"] .projects-section,
+  [data-theme="light"] .testi-section,
+  [data-theme="light"] .contact-section,
+  [data-theme="light"] .proj-modal,
+  [data-theme="light"] .modal-overlay .modal-box{
+    --text: #1e1b4b;
+    --text-2: #3730a3;
+    --text-3: #5b21b6;
+  }
 
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
