@@ -2,6 +2,13 @@
 <?php use App\Models\PortfolioStackModel; ?>
 <html lang="en">
 <head>
+<script>
+(function(){
+  var saved = localStorage.getItem('portfolio-theme');
+  var theme = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+  document.documentElement.setAttribute('data-theme', theme);
+})();
+</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title><?= esc($header['name'] ?? 'Portfolio') ?> — <?= esc($about['tagline'] ?? 'Portfolio') ?></title>
@@ -135,6 +142,20 @@
   --font-b:   'Cabinet Grotesk',sans-serif;
   --font-m:   'DM Mono',monospace;
 }
+
+[data-theme="light"] {
+  --ink:      #f8fafc;
+  --ink-2:    #eef1f6;
+  --ink-3:    #e7ebf1;
+  --text:     #0f172a;
+  --text-2:   #475569;
+  --text-3:   #64748b;
+  --border:   rgba(15,23,42,0.08);
+  --border-p: rgba(99,102,241,0.25);
+  --g-card:   linear-gradient(145deg,rgba(15,23,42,0.035) 0%,rgba(15,23,42,0.01) 100%);
+}
+
+
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:var(--font-b);background:var(--ink);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased}
@@ -607,6 +628,70 @@ a.re-contact-item:hover{color:#fff}
 @keyframes swirlA{0%,100%{transform:rotate(0deg) scale(1)}30%{transform:rotate(9deg) scale(1.05)}70%{transform:rotate(-7deg) scale(0.96)}}
 @keyframes swirlB{0%,100%{transform:rotate(0deg) scale(1)}40%{transform:rotate(-10deg) scale(1.04)}80%{transform:rotate(6deg) scale(0.97)}}
 @media(max-width:768px){.hero-swirl,.hero-swirl-2{display:none}}
+
+
+/* ════ LIGHT THEME OVERRIDES ════ */
+[data-theme="light"] .navbar{
+  background:rgba(255,255,255,0.85);
+}
+[data-theme="light"] .mobile-menu{
+  background:rgba(255,255,255,0.97);
+}
+[data-theme="light"] .nav-link:hover,
+[data-theme="light"] .nav-link.active{
+  background:rgba(15,23,42,0.05);
+}
+[data-theme="light"] .mobile-menu .nav-link:hover,
+[data-theme="light"] .mobile-menu .nav-link.active{
+  background:rgba(99,102,241,0.08);
+}
+[data-theme="light"] .tech-logo-wrap{
+  background:rgba(15,23,42,0.03);
+  border-color:rgba(15,23,42,0.08);
+}
+[data-theme="light"] .tech-item:hover .tech-logo-wrap{
+  background:rgba(99,102,241,0.08);
+}
+[data-theme="light"] .svc-icon{
+  color:#4f46e5;
+}
+[data-theme="light"] .service-card:hover{
+  box-shadow:0 20px 56px rgba(15,23,42,0.1),0 0 0 1px rgba(99,102,241,0.14);
+}
+[data-theme="light"] .footer-admin-link{
+  color:rgba(15,23,42,0.35);
+}
+[data-theme="light"] .nav-hamburger{
+  background:rgba(15,23,42,0.05);
+  border-color:rgba(15,23,42,0.1);
+}
+[data-theme="light"] .nav-hamburger span{
+  background:var(--text-2);
+}
+
+
+body,.navbar,.mobile-menu,.service-card,.tech-logo-wrap,footer,.nav-link{
+  transition:background-color 0.35s ease,color 0.35s ease,border-color 0.35s ease;
+}
+
+.theme-toggle{
+  width:38px;height:38px;border-radius:10px;
+  background:rgba(99,102,241,0.1);
+  border:1px solid rgba(99,102,241,0.25);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  color:#a5b4fc;font-size:14px;transition:all 0.2s;
+  margin-left:8px;flex-shrink:0;
+}
+.theme-toggle:hover{
+  background:rgba(99,102,241,0.2);
+  transform:translateY(-1px);
+}
+.mobile-menu .theme-toggle{
+  width:100%;margin:4px 0 0;padding:13px 20px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;
+}
+
+
 </style>
 </head>
 <body>
@@ -638,6 +723,9 @@ $headerEmailOb  = obfuscateEmail($headerEmail);
     </div>
   </a>
   <div class="nav-links">
+    <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme" title="Toggle theme">
+      <i class="theme-toggle-icon fas fa-moon"></i>
+    </button>
     <a class="nav-link active" href="#hero">About</a>
     <a class="nav-link" href="#services">Services</a>
     <a class="nav-link" href="#techstack">Stack</a>
@@ -652,6 +740,9 @@ $headerEmailOb  = obfuscateEmail($headerEmail);
 </nav>
 
 <div class="mobile-menu" id="mobileMenu">
+  <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme">
+    <i class="theme-toggle-icon fas fa-moon"></i> <span>Toggle Theme</span>
+  </button>
   <a class="nav-link active" href="#hero" onclick="closeMobileMenu()"><i class="fas fa-user"></i> About</a>
   <a class="nav-link" href="#services" onclick="closeMobileMenu()"><i class="fas fa-briefcase"></i> Services</a>
   <a class="nav-link" href="#techstack" onclick="closeMobileMenu()"><i class="fas fa-layer-group"></i> Stack</a>
@@ -660,6 +751,7 @@ $headerEmailOb  = obfuscateEmail($headerEmail);
   <a class="nav-link" href="#testimonials" onclick="closeMobileMenu()"><i class="fas fa-quote-left"></i> Testimonials</a>
   <?php endif; ?>
   <a class="nav-link" href="#contact" onclick="closeMobileMenu()"><i class="fas fa-envelope"></i> Contact</a>
+  
   <div class="mobile-menu-divider"></div>
   <a class="nav-btn" href="#" onclick="openResumeModal(event);closeMobileMenu()"><i class="fas fa-file-alt"></i> View Resume</a>
 </div>
@@ -1256,6 +1348,21 @@ function openProjectFromStack(projectId, e){
   e.stopPropagation();
   openProject(projectId);
 }
+
+
+function toggleTheme(){
+  var current = document.documentElement.getAttribute('data-theme') || 'dark';
+  var next = current === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('portfolio-theme', next);
+  updateThemeIcon(next);
+}
+function updateThemeIcon(theme){
+  document.querySelectorAll('.theme-toggle-icon').forEach(function(el){
+    el.className = 'theme-toggle-icon fas ' + (theme === 'dark' ? 'fa-sun' : 'fa-moon');
+  });
+}
+updateThemeIcon(document.documentElement.getAttribute('data-theme') || 'dark');
 </script>
 </body>
 </html>
