@@ -698,7 +698,7 @@ $headerEmailOb  = obfuscateEmail($headerEmail);
       <div class="photo-placeholder"><i class="fas fa-user"></i></div>
       <?php endif; ?>
     </div>
-    <div class="hero-badge"><span class="badge-dot"></span> Available for work</div>
+   <!-- <div class="hero-badge"><span class="badge-dot"></span> Available for work</div>
     <div class="hero-stat hero-stat-1">
       <div class="s-val" style="background:var(--g-accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">IoT</div>
       <div class="s-lbl">+ ML</div>
@@ -707,16 +707,16 @@ $headerEmailOb  = obfuscateEmail($headerEmail);
       <div class="s-val">CS</div>
       <div class="s-lbl">Scholar</div>
     </div>
-  </div>
+  </div> -->
 
   <div class="hero-text">
-    <div class="hero-mono">Full-Stack Developer</div>
+    <div class="hero-mono">Full-Stack Web Developer</div>
     <?php $np=explode(' ',trim($header['name']??'Your Name'),2); ?>
     <h1 class="hero-name"><?= esc($np[0]) ?><br><span class="hero-name-accent"><?= esc($np[1]??'') ?></span></h1>
     <div class="hero-pill"><i class="fas fa-code" style="font-size:10px"></i><?= esc($about['tagline']??'Full-Stack Web Developer') ?></div>
     <div class="cred-row">
       <span class="cred-badge"><i class="fas fa-check-circle"></i> Civil Service Professional Eligible</span>
-      <span class="cred-badge dost"><i class="fas fa-award"></i> DOST-JLSS Scholar</span>
+      <span class="cred-badge dost"><i class="fas fa-award"></i> DOST Scholar</span>
       <span class="cred-badge award"><i class="fas fa-star"></i> Academic Excellence 2022–2026</span>
     </div>
     <p class="hero-bio"><?= nl2br(esc($about['bio']??'')) ?></p>
