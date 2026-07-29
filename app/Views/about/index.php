@@ -1174,19 +1174,6 @@ document.addEventListener('click', function(e){
   document.querySelectorAll('.proj-card-wrap.flipped').forEach(el=>el.classList.remove('flipped'));
 });
 
-
-  // desktop / no-media cards: click anywhere opens the project
-  const id = parseInt(wrap.dataset.project);
-  if(id) openProject(id);
-});
-
-// tapping outside any card un-flips whatever's open on touch
-document.addEventListener('click', function(e){
-  if(!isTouchDevice) return;
-  if(e.target.closest('.proj-card-wrap')) return;
-  document.querySelectorAll('.proj-card-wrap.flipped').forEach(el=>el.classList.remove('flipped'));
-});
-
 const navSections=['hero','services','projects','testimonials','contact'];
 window.addEventListener('scroll',()=>{const y=window.scrollY+90;navSections.forEach(id=>{const el=document.getElementById(id);if(!el)return;const links=document.querySelectorAll(`.nav-link[href="#${id}"]`);if(!links.length)return;if(el.offsetTop<=y&&el.offsetTop+el.offsetHeight>y){document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));links.forEach(l=>l.classList.add('active'));}});},{passive:true});
 
