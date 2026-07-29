@@ -251,8 +251,14 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .proj-card-wrap{perspective:1200px;border-radius:var(--radius);position:relative;}
 .proj-card-wrap.hidden{display:none}
 
-.proj-card-wrap:hover .proj-card.has-media{transform:rotateY(180deg);box-shadow:0 28px 70px rgba(0,0,0,0.6)}
+@media (hover: hover) and (pointer: fine) {
+  .proj-card-wrap:hover .proj-card.has-media{transform:rotateY(180deg);box-shadow:0 28px 70px rgba(0,0,0,0.6)}
+  .proj-face-back:hover .proj-carousel-arrows{opacity:1;}
+}
+
 .proj-card-wrap.flipped .proj-card.has-media{transform:rotateY(180deg);box-shadow:0 28px 70px rgba(0,0,0,0.6)}
+.proj-card-wrap.flipped .proj-carousel-arrows{opacity:1;}
+
 .proj-card{
   background:rgba(255,255,255,0.03);
   border:1px solid rgba(99,102,241,0.14);
@@ -269,8 +275,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 
 /* ── FRONT / BACK FACES ── */
 
-.proj-face-back:hover .proj-carousel-arrows{opacity:1;}
-.proj-card-wrap.flipped .proj-carousel-arrows{opacity:1;}
 .proj-face{
   position:absolute;inset:0;
   backface-visibility:hidden;-webkit-backface-visibility:hidden;
@@ -1150,7 +1154,6 @@ document.getElementById('proj-grid').addEventListener('click', function(e){
     const backTap = e.target.closest('.proj-face-back');
 
     if(!wrap.classList.contains('flipped')){
-      // first tap: flip only, don't open yet
       e.preventDefault();
       document.querySelectorAll('.proj-card-wrap.flipped').forEach(el=>{
         if(el !== wrap) el.classList.remove('flipped');
@@ -1158,9 +1161,20 @@ document.getElementById('proj-grid').addEventListener('click', function(e){
       wrap.classList.add('flipped');
       return;
     }
-    if(backTap) return; // already flipped, let the back-face's own onclick open the project
+    if(backTap) return;
     return;
   }
+
+  const id = parseInt(wrap.dataset.project);
+  if(id) openProject(id);
+});
+
+document.addEventListener('click', function(e){
+  if(!isTouchDevice) return;
+  if(e.target.closest('.proj-card-wrap')) return;
+  document.querySelectorAll('.proj-card-wrap.flipped').forEach(el=>el.classList.remove('flipped'));
+});
+
 
   // desktop / no-media cards: click anywhere opens the project
   const id = parseInt(wrap.dataset.project);
