@@ -347,7 +347,6 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   opacity:0;
   transition:opacity 0.2s;
 }
-.proj-face-back:hover .proj-carousel-arrows{opacity:1;}
 .proj-carousel-arrow{
   width:30px;height:30px;
   border-radius:50%;
