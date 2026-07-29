@@ -250,6 +250,9 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 /* ── FLIP CARD WRAPPER ── */
 .proj-card-wrap{perspective:1200px;border-radius:var(--radius);position:relative;}
 .proj-card-wrap.hidden{display:none}
+
+.proj-card-wrap:hover .proj-card.has-media{transform:rotateY(180deg);box-shadow:0 28px 70px rgba(0,0,0,0.6)}
+.proj-card-wrap.flipped .proj-card.has-media{transform:rotateY(180deg);box-shadow:0 28px 70px rgba(0,0,0,0.6)}
 .proj-card{
   background:rgba(255,255,255,0.03);
   border:1px solid rgba(99,102,241,0.14);
@@ -261,11 +264,13 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   min-height:290px;
 }
 .proj-card:not(.has-media):hover{border-color:rgba(99,102,241,0.32);transform:translateY(-4px);box-shadow:0 20px 56px rgba(0,0,0,0.45)}
-.proj-card-wrap:hover .proj-card.has-media{transform:rotateY(180deg);box-shadow:0 28px 70px rgba(0,0,0,0.6)}
 .proj-card.featured{border-color:rgba(139,92,246,0.35);box-shadow:0 0 0 1px rgba(139,92,246,0.12)}
 .proj-card-wrap:not(:hover) .proj-card.featured:hover{border-color:rgba(139,92,246,0.55);box-shadow:0 20px 56px rgba(139,92,246,0.2)}
 
 /* ── FRONT / BACK FACES ── */
+
+.proj-face-back:hover .proj-carousel-arrows{opacity:1;}
+.proj-card-wrap.flipped .proj-carousel-arrows{opacity:1;}
 .proj-face{
   position:absolute;inset:0;
   backface-visibility:hidden;-webkit-backface-visibility:hidden;
@@ -1131,7 +1136,44 @@ function closeProjModal(){document.getElementById('projModal').classList.remove(
 function closeProjModalOnOverlay(e){if(e.target===document.getElementById('projModal'))closeProjModal();}
 function togglePmPhase(header){const phase=header.closest('.pm-phase');const isOpen=phase.classList.contains('open');document.querySelectorAll('.pm-phase').forEach(p=>p.classList.remove('open'));if(!isOpen)phase.classList.add('open');}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeProjModal();closeResumeModal();closeMobileMenu();}});
-document.getElementById('proj-grid').addEventListener('click',function(e){if(e.target.closest('.proj-carousel-arrow')||e.target.closest('.proj-carousel-dots'))return;if(e.target.closest('.proj-face-back'))return;const wrap=e.target.closest('.proj-card-wrap');if(!wrap)return;const id=parseInt(wrap.dataset.project);if(id)openProject(id);});
+
+const isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
+document.getElementById('proj-grid').addEventListener('click', function(e){
+  if(e.target.closest('.proj-carousel-arrow') || e.target.closest('.proj-carousel-dots')) return;
+
+  const wrap = e.target.closest('.proj-card-wrap');
+  if(!wrap) return;
+  const hasMedia = wrap.querySelector('.proj-card.has-media');
+
+  if(isTouchDevice && hasMedia){
+    const backTap = e.target.closest('.proj-face-back');
+
+    if(!wrap.classList.contains('flipped')){
+      // first tap: flip only, don't open yet
+      e.preventDefault();
+      document.querySelectorAll('.proj-card-wrap.flipped').forEach(el=>{
+        if(el !== wrap) el.classList.remove('flipped');
+      });
+      wrap.classList.add('flipped');
+      return;
+    }
+    if(backTap) return; // already flipped, let the back-face's own onclick open the project
+    return;
+  }
+
+  // desktop / no-media cards: click anywhere opens the project
+  const id = parseInt(wrap.dataset.project);
+  if(id) openProject(id);
+});
+
+// tapping outside any card un-flips whatever's open on touch
+document.addEventListener('click', function(e){
+  if(!isTouchDevice) return;
+  if(e.target.closest('.proj-card-wrap')) return;
+  document.querySelectorAll('.proj-card-wrap.flipped').forEach(el=>el.classList.remove('flipped'));
+});
+
 const navSections=['hero','services','projects','testimonials','contact'];
 window.addEventListener('scroll',()=>{const y=window.scrollY+90;navSections.forEach(id=>{const el=document.getElementById(id);if(!el)return;const links=document.querySelectorAll(`.nav-link[href="#${id}"]`);if(!links.length)return;if(el.offsetTop<=y&&el.offsetTop+el.offsetHeight>y){document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));links.forEach(l=>l.classList.add('active'));}});},{passive:true});
 
