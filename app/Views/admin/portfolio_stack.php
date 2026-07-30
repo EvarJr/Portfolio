@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Portfolio Stack — Admin</title>
@@ -265,13 +266,17 @@ body.dark .dark-toggle{background:#111827;border-color:#1e2535;color:#fbbf24}
             ?>
             <div class="stack-card" draggable="true" data-id="<?= $stack['id'] ?>">
               <i class="fas fa-grip-vertical stack-card-drag"></i>
-              <div class="stack-card-img">
-                <?php if(!empty($stack['image_url'])): ?>
-                <img src="<?= esc($stack['image_url']) ?>" alt="<?= esc($stack['name']) ?>">
+              <?php
+                $sImgUrl   = $stack['image_url'] ?? '';
+                $sIsLottie = str_ends_with(strtolower(parse_url($sImgUrl, PHP_URL_PATH) ?? ''), '.json');
+                ?>
+                <?php if($sIsLottie): ?>
+                <dotlottie-player src="<?= esc($sImgUrl) ?>" autoplay loop style="width:44px;height:44px"></dotlottie-player>
+                <?php elseif(!empty($sImgUrl)): ?>
+                <img src="<?= esc($sImgUrl) ?>" alt="<?= esc($stack['name']) ?>">
                 <?php else: ?>
                 <i class="fas fa-code" style="font-size:22px;color:#d1d5db"></i>
                 <?php endif; ?>
-              </div>
               <div class="stack-card-name"><?= esc($stack['name']) ?></div>
               <div class="stack-card-meta"><?= $projCount ?> project<?= $projCount !== 1 ? 's' : '' ?></div>
               <div class="stack-card-actions">
@@ -352,7 +357,9 @@ function buildPanelForm(stack) {
       <div class="img-upload-area">
         <div class="img-preview-box" id="img-preview-box">
           ${imageUrl
-            ? `<img src="${imageUrl}" id="img-preview-el">`
+            ? (imageUrl.toLowerCase().endsWith('.json')
+                ? `<dotlottie-player src="${imageUrl}" autoplay loop style="width:50px;height:50px"></dotlottie-player>`
+                : `<img src="${imageUrl}" id="img-preview-el">`)
             : `<i class="fas fa-image" style="font-size:22px;color:#d1d5db" id="img-preview-icon"></i>`}
         </div>
         <div class="img-upload-btns">
@@ -422,15 +429,30 @@ function closePanel() {
 function previewFile(input) {
   const file = input.files[0];
   if(!file) return;
-  uploadedImageUrl = ''; // will be uploaded on save
-  const reader = new FileReader();
-  reader.onload = e => updatePreview(e.target.result);
-  reader.readAsDataURL(file);
+  uploadedUrl = '';
+  const isLottie = file.name.toLowerCase().endsWith('.json');
+  if(isLottie) {
+    // Show lottie preview in admin
+    const url = URL.createObjectURL(file);
+    const box = document.getElementById('img-preview-box');
+    box.innerHTML = `<dotlottie-player src="${url}" autoplay loop style="width:50px;height:50px"></dotlottie-player>`;
+  } else {
+    const reader = new FileReader();
+    reader.onload = e => updatePreview(e.target.result);
+    reader.readAsDataURL(file);
+  }
 }
 
 function previewUrl(url) {
-  uploadedImageUrl = '';
-  if(url) updatePreview(url);
+  uploadedUrl = '';
+  if(!url) return;
+  const isLottie = url.toLowerCase().endsWith('.json');
+  if(isLottie) {
+    const box = document.getElementById('img-preview-box');
+    box.innerHTML = `<dotlottie-player src="${url}" autoplay loop style="width:50px;height:50px"></dotlottie-player>`;
+  } else {
+    updatePreview(url);
+  }
 }
 
 function updatePreview(src) {

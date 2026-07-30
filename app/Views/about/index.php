@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php use App\Models\PortfolioStackModel; ?>
+<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
 <html lang="en">
 <head>
 <script>
@@ -936,13 +937,24 @@ foreach(($projects ?? []) as $p){
         <?php endforeach; ?>
       </div>
       <?php endif; ?>
-      <div class="tech-logo-wrap">
-        <?php if(!empty($stack['image_url'])): ?>
-        <img src="<?= esc($stack['image_url']) ?>" alt="<?= esc($stack['name']) ?>" loading="lazy">
-        <?php else: ?>
-        <i class="fas fa-code" style="font-size:26px;color:rgba(99,102,241,0.45)"></i>
-        <?php endif; ?>
-      </div>
+      <?php
+        $imgUrl   = $stack['image_url'] ?? '';
+        $isLottie = str_ends_with(strtolower(parse_url($imgUrl, PHP_URL_PATH) ?? ''), '.json');
+        ?>
+        <div class="tech-logo-wrap">
+          <?php if($isLottie): ?>
+          <dotlottie-player
+            src="<?= esc($imgUrl) ?>"
+            autoplay
+            loop
+            style="width:54px;height:54px">
+          </dotlottie-player>
+          <?php elseif(!empty($imgUrl)): ?>
+          <img src="<?= esc($imgUrl) ?>" alt="<?= esc($stack['name']) ?>" loading="lazy">
+          <?php else: ?>
+          <i class="fas fa-code" style="font-size:26px;color:rgba(99,102,241,0.45)"></i>
+          <?php endif; ?>
+        </div>
       <div class="tech-name"><?= esc($stack['name']) ?></div>
     </div>
     <?php endforeach; ?>

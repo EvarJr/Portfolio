@@ -71,19 +71,27 @@ class PortfolioStackController extends BaseApiController
         $apiSecret = env('CLOUDINARY_API_SECRET');
         $folder    = 'evarportfolio/techstack';
         $timestamp = time();
-        $signature = hash('sha256', "folder={$folder}&timestamp={$timestamp}{$apiSecret}");
 
-        $ch = curl_init("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload");
+        // Detect if file is JSON (Lottie animation)
+        $ext          = strtolower(pathinfo($file->getClientName(), PATHINFO_EXTENSION));
+        $isLottie     = $ext === 'json';
+        $resourceType = $isLottie ? 'raw' : 'image';
+
+        $sigString = "folder={$folder}&resource_type={$resourceType}&timestamp={$timestamp}";
+        $signature = hash('sha256', $sigString . $apiSecret);
+
+        $ch = curl_init("https://api.cloudinary.com/v1_1/{$cloudName}/{$resourceType}/upload");
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST           => true,
             CURLOPT_TIMEOUT        => 60,
             CURLOPT_POSTFIELDS     => [
-                'file'      => new \CURLFile($file->getTempName(), $file->getMimeType(), $file->getClientName()),
-                'api_key'   => $apiKey,
-                'timestamp' => $timestamp,
-                'folder'    => $folder,
-                'signature' => $signature,
+                'file'          => new \CURLFile($file->getTempName(), $file->getMimeType(), $file->getClientName()),
+                'api_key'       => $apiKey,
+                'timestamp'     => $timestamp,
+                'folder'        => $folder,
+                'resource_type' => $resourceType,
+                'signature'     => $signature,
             ],
         ]);
         $response = curl_exec($ch);
@@ -95,7 +103,10 @@ class PortfolioStackController extends BaseApiController
         if(empty($result['secure_url']))
             return $this->jsonError('Cloudinary error: ' . ($result['error']['message'] ?? 'Unknown'));
 
-        $m->update($id, ['image_url' => $result['secure_url']]);
-        return $this->jsonSuccess(['url' => $result['secure_url']], 'Image uploaded.');
+        // For Lottie JSON, mark URL so frontend knows it's a Lottie file
+        $finalUrl = $result['secure_url'];
+
+        $m->update($id, ['image_url' => $finalUrl]);
+        return $this->jsonSuccess(['url' => $finalUrl], 'File uploaded.');
     }
 }
