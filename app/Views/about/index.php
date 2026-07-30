@@ -280,7 +280,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .cred-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px}
 .cred-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.22);border-radius:50px;padding:5px 12px;font-size:11px;font-weight:500;color:var(--accent-green-txt);font-family:var(--font-b)}
 .cred-badge i{font-size:9px;color:#10b981}
-.cred-badge.dost{background:rgba(6,182,212,0.08);border-color:rgba(6,182,212,0.22);color:#67e8f9}
+.cred-badge.dost{background:rgba(6,182,212,0.08);border-color:rgba(6,182,212,0.22);color:var(--accent-cyan-txt)}
 .cred-badge.dost i{color:var(--accent-cyan-txt)}
 .cred-badge.award{background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.2);color:var(--accent-yellow-txt)}
 .cred-badge.award i{color:#fbbf24}
