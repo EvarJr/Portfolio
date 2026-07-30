@@ -180,8 +180,8 @@ body::before{
   font-family:var(--font-b);
 }
 .cred-badge i{font-size:9px;color:#10b981}
-.cred-badge.dost{background:rgba(6,182,212,0.08);border-color:rgba(6,182,212,0.22);color:#67e8f9}
-.cred-badge.dost i{color:var(--cyan)}
+.cred-badge.dost{background:rgba(6,182,212,0.08);border-color:rgba(6,182,212,0.22);color:var(--accent-cyan-txt)}
+.cred-badge.dost i{color:var(--accent-cyan-txt)}
 .cred-badge.award{background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.2);color:#fde68a}
 .cred-badge.award i{color:#fbbf24}
 
