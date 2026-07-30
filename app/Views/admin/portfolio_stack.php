@@ -79,7 +79,9 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);fon
 .stack-card.dragging{opacity:0.4;border-style:dashed}
 .stack-card.drag-over{border-color:var(--accent);background:#eff6ff}
 .stack-card-drag{position:absolute;top:7px;left:8px;color:#d1d5db;font-size:11px;cursor:grab}
-.stack-card-img{width:60px;height:60px;border-radius:12px;background:#f9fafb;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:8px}
+.stack-card-img{width:60px;height:60px;border-radius:12px;background:#f9fafb;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:8px;flex-shrink:0}
+.stack-card-img img{width:100%;height:100%;object-fit:contain}
+.stack-card-img dotlottie-player{width:44px !important;height:44px !important;max-width:44px !important;max-height:44px !important}
 .stack-card-img img{width:100%;height:100%;object-fit:contain}
 .stack-card-name{font-size:12.5px;font-weight:600;color:var(--text);text-align:center}
 .stack-card-meta{font-size:11px;color:var(--muted);text-align:center}
@@ -107,6 +109,8 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);fon
 /* ── IMAGE UPLOAD ── */
 .img-upload-area{display:flex;align-items:center;gap:14px;margin-bottom:14px}
 .img-preview-box{width:70px;height:70px;border-radius:12px;background:#f9fafb;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:6px;flex-shrink:0}
+.img-preview-box img{width:100%;height:100%;object-fit:contain}
+.img-preview-box dotlottie-player{width:54px !important;height:54px !important;max-width:54px !important;max-height:54px !important}
 .img-preview-box img{width:100%;height:100%;object-fit:contain}
 .img-upload-btns{display:flex;flex-direction:column;gap:8px;flex:1}
 .or-text{font-size:11px;color:var(--muted);text-align:center;font-weight:600;letter-spacing:0.5px}
