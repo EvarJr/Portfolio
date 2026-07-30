@@ -333,12 +333,12 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   background:var(--surface-card);
   border:1px solid rgba(99,102,241,0.14);
   border-radius:var(--radius);
-  /* NO overflow:hidden here — it would clip the back-face arrows */
-  transition:transform 0.65s cubic-bezier(0.4,0.2,0.2,1),box-shadow 0.3s,border-color 0.3s;
+  transition:transform 0.65s cubic-bezier(0.4,0.2,0.2,1),box-shadow 0.3s,border-color 0.3s,background 0.4s ease;
   display:flex;flex-direction:column;cursor:pointer;
   transform-style:preserve-3d;position:relative;
   min-height:290px;
 }
+
 .proj-card:not(.has-media):hover{border-color:rgba(99,102,241,0.32);transform:translateY(-4px);box-shadow:0 20px 56px rgba(0,0,0,0.45)}
 .proj-card.featured{border-color:rgba(139,92,246,0.35);box-shadow:0 0 0 1px rgba(139,92,246,0.12)}
 .proj-card-wrap:not(:hover) .proj-card.featured:hover{border-color:rgba(139,92,246,0.55);box-shadow:0 20px 56px rgba(139,92,246,0.2)}
@@ -359,6 +359,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   border:1px solid rgba(99,102,241,0.3);
   z-index:1;
   overflow:visible;
+  transition:background 0.4s ease;
 }
 
 /* ── BACK FACE — PHOTO CAROUSEL ── */
@@ -741,7 +742,7 @@ body,.navbar,.mobile-menu,.service-card,.tech-logo-wrap,footer,.nav-link{
 }
 
 .hero,.projects-section,.testi-section,.contact-section,
-.proj-card,.proj-face-back,.proj-modal,.modal-overlay,.proj-modal-overlay,
+.proj-modal,.modal-overlay,.proj-modal-overlay,
 .testi-card,.proj-back-info,.pm-header{
   transition:background 0.4s ease,background-color 0.4s ease;
 }
