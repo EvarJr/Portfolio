@@ -157,6 +157,12 @@
   --photo-frame-bg:    linear-gradient(145deg,rgba(99,102,241,0.18),rgba(139,92,246,0.08));
   --hero-badge-bg:     linear-gradient(135deg,#1a2038,#212940);
   --hero-stat-bg:      rgba(5,8,16,0.92);
+  --accent-purple-txt: #a5b4fc;
+  --accent-cyan-txt:   #67e8f9;
+  --accent-green-txt:  #6ee7b7;
+  --accent-yellow-txt: #fde68a;
+  --accent-lilac-txt:  #d8b4fe;
+  --accent-indigo-txt: #818cf8;
 }
 
 [data-theme="light"] {
@@ -185,6 +191,12 @@
   --photo-frame-bg:    linear-gradient(145deg,rgba(99,102,241,0.14),rgba(139,92,246,0.06));
   --hero-badge-bg:     linear-gradient(135deg,#dde3f7,#e5dcf5);
   --hero-stat-bg:      rgba(226,230,247,0.92);
+  --accent-purple-txt: #4338ca;
+  --accent-cyan-txt:   #0e7490;
+  --accent-green-txt:  #047857;
+  --accent-yellow-txt: #b45309;
+  --accent-lilac-txt:  #7c3aed;
+  --accent-indigo-txt: #4338ca;
   
 }
 
@@ -233,7 +245,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .mobile-menu .nav-link{padding:12px 16px;border-radius:12px;font-size:15px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:10px;}
 .mobile-menu .nav-link:hover,.mobile-menu .nav-link.active{background:rgba(99,102,241,0.1);color:var(--text);}
 .mobile-menu .nav-link i{width:18px;text-align:center;font-size:13px;color:var(--text-3)}
-.mobile-menu .nav-link.active i{color:#a5b4fc}
+.mobile-menu .nav-link.active i{color:var(--accent-purple-txt)}
 .mobile-menu-divider{height:1px;background:var(--border);margin:8px 0}
 .mobile-menu .nav-btn{margin:4px 0 0;padding:13px 20px;border-radius:12px;font-size:14px;text-align:center;justify-content:center;display:flex;align-items:center;gap:8px;}
 
@@ -264,13 +276,13 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .hero-mono::before{content:'';display:inline-block;width:30px;height:1px;background:var(--cyan)}
 .hero-name{font-family:var(--font-d);font-size:clamp(44px,5.5vw,76px);font-weight:700;line-height:1.0;color:var(--text);margin-bottom:10px;letter-spacing:-2px}
 .hero-name-accent{background:var(--g-accent);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block}
-.hero-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.22);border-radius:50px;padding:6px 14px;font-size:11.5px;font-weight:600;color:#a5b4fc;margin-bottom:20px;font-family:var(--font-d);letter-spacing:0.2px}
+.hero-pill{display:inline-flex;align-items:center;gap:7px;background:rgba(99,102,241,0.1);border:1px solid rgba(99,102,241,0.22);border-radius:50px;padding:6px 14px;font-size:11.5px;font-weight:600;color:var(--accent-purple-txt); margin-bottom:20px;font-family:var(--font-d);letter-spacing:0.2px}
 .cred-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px}
-.cred-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.22);border-radius:50px;padding:5px 12px;font-size:11px;font-weight:500;color:#6ee7b7;font-family:var(--font-b)}
+.cred-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.22);border-radius:50px;padding:5px 12px;font-size:11px;font-weight:500;color:var(--accent-green-txt);font-family:var(--font-b)}
 .cred-badge i{font-size:9px;color:#10b981}
 .cred-badge.dost{background:rgba(6,182,212,0.08);border-color:rgba(6,182,212,0.22);color:#67e8f9}
-.cred-badge.dost i{color:var(--cyan)}
-.cred-badge.award{background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.2);color:#fde68a}
+.cred-badge.dost i{color:var(--accent-cyan-txt)}
+.cred-badge.award{background:rgba(251,191,36,0.08);border-color:rgba(251,191,36,0.2);color:var(--accent-yellow-txt)}
 .cred-badge.award i{color:#fbbf24}
 .hero-bio{font-size:15px;line-height:1.85;color:var(--text-2);max-width:580px;margin-bottom:32px;font-weight:400}
 .hero-btns{display:flex;gap:13px;flex-wrap:wrap;margin-bottom:30px}
@@ -280,14 +292,14 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .btn-ghost:hover{border-color:rgba(99,102,241,0.45);color:var(--text);background:rgba(99,102,241,0.07)}
 .hero-socials{display:flex;gap:9px}
 .social-icon{width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,0.04);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--text-3);text-decoration:none;font-size:14px;transition:all 0.2s}
-.social-icon:hover{background:rgba(99,102,241,0.14);border-color:rgba(99,102,241,0.38);color:#a5b4fc;transform:translateY(-2px)}
+.social-icon:hover{background:rgba(99,102,241,0.14);border-color:rgba(99,102,241,0.38);color:var(--accent-purple-txt);transform:translateY(-2px)}
 .counters-row{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap}
 .counter-chip{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:12px;padding:10px 16px;transition:border-color 0.3s}
 .counter-chip:hover{border-color:rgba(99,102,241,0.3)}
 .counter-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
-.counter-icon.blue{background:rgba(99,102,241,0.15);color:#a5b4fc}
-.counter-icon.cyan{background:rgba(6,182,212,0.12);color:#67e8f9}
-.counter-icon.green{background:rgba(16,185,129,0.12);color:#6ee7b7}
+.counter-icon.blue{background:rgba(99,102,241,0.15);color:var(--accent-purple-txt)}
+.counter-icon.cyan{background:rgba(6,182,212,0.12);color:var(--accent-cyan-txt)}
+.counter-icon.green{background:rgba(16,185,129,0.12);color:var(--accent-green-txt)}
 .counter-val{font-family:var(--font-d);font-size:20px;font-weight:700;color:var(--text);line-height:1}
 .counter-lbl{font-size:10px;color:var(--text-3);margin-top:2px;font-family:var(--font-m);text-transform:uppercase;letter-spacing:0.7px}
 .section-eyebrow{font-family:var(--font-m);font-size:10.5px;letter-spacing:3px;text-transform:uppercase;margin-bottom:9px;display:flex;align-items:center;gap:9px}
@@ -401,7 +413,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .proj-back-info-text{flex:1;min-width:0;}
 .proj-back-title{font-family:var(--font-d);font-size:13px;font-weight:700;color:var(--text);margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .proj-back-hint{font-size:10px;color:var(--text-3);display:flex;align-items:center;gap:4px;font-family:var(--font-m)}
-.proj-back-hint i{font-size:9px;color:#a5b4fc}
+.proj-back-hint i{font-size:9px;color:var(--accent-purple-txt)}
 
 /* ── CAROUSEL ARROWS — float over media, pinned to left/right edges, vertically centered ── */
 .proj-carousel-arrows{
@@ -447,15 +459,15 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .proj-thumb-lgu{background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(6,182,212,0.07))}
 .proj-thumb-personal{background:linear-gradient(135deg,rgba(251,191,36,0.1),rgba(249,115,22,0.07))}
 .proj-thumb-icon{opacity:0.5;font-size:36px}
-.proj-thumb-icon.thesis{color:#c4b5fd}
-.proj-thumb-icon.ot{color:#67e8f9}
-.proj-thumb-icon.lgu{color:#6ee7b7}
-.proj-thumb-icon.personal{color:#fde68a}
+.proj-thumb-icon.thesis{color:var(--accent-lilac-txt)}
+.proj-thumb-icon.ot{color:var(--accent-cyan-txt)}
+.proj-thumb-icon.lgu{color:var(--accent-green-txt)}
+.proj-thumb-icon.personal{color:var(--accent-yellow-txt)}
 .proj-type-tag{position:absolute;top:10px;right:10px;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:0.3px;font-family:var(--font-d)}
-.tag-thesis{background:rgba(139,92,246,0.28);color:#d8b4fe;border:1px solid rgba(139,92,246,0.3)}
-.tag-ojt{background:rgba(6,182,212,0.18);color:#67e8f9;border:1px solid rgba(6,182,212,0.25)}
-.tag-lgu{background:rgba(16,185,129,0.16);color:#6ee7b7;border:1px solid rgba(16,185,129,0.22)}
-.tag-personal{background:rgba(251,191,36,0.14);color:#fde68a;border:1px solid rgba(251,191,36,0.2)}
+.tag-thesis{background:rgba(139,92,246,0.28);color:var(--accent-lilac-txt);border:1px solid rgba(139,92,246,0.3)}
+.tag-ojt{background:rgba(6,182,212,0.18);color:var(--accent-cyan-txt);border:1px solid rgba(6,182,212,0.25)}
+.tag-lgu{background:rgba(16,185,129,0.16);color:var(--accent-green-txt);border:1px solid rgba(16,185,129,0.22)}
+.tag-personal{background:rgba(251,191,36,0.14);color:var(--accent-yellow-txt);border:1px solid rgba(251,191,36,0.2)}
 .proj-body{padding:18px 18px 0;flex:1;min-height:0;overflow:hidden}
 .proj-title{
   font-family:var(--font-d);font-size:14.5px;font-weight:700;color:var(--text);margin-bottom:7px;letter-spacing:-0.3px;line-height:1.35;
@@ -476,10 +488,10 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
   max-height:44px;
   overflow:hidden;
 }
-.proj-tech{font-size:10.5px;color:#818cf8;background:rgba(99,102,241,0.1);padding:2px 8px;border-radius:4px;font-family:var(--font-m)}
+.proj-tech{font-size:10.5px;color:var(--accent-indigo-txt);background:rgba(99,102,241,0.1);padding:2px 8px;border-radius:4px;font-family:var(--font-m)}
 .proj-footer{display:flex;gap:12px;padding:12px 18px;border-top:1px solid rgba(255,255,255,0.04);flex-shrink:0}
-.proj-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#818cf8;text-decoration:none;font-weight:500;font-family:var(--font-b);transition:color 0.2s}
-.proj-link:hover{color:#a5b4fc}
+.proj-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--accent-indigo-txt);text-decoration:none;font-weight:500;font-family:var(--font-b);transition:color 0.2s}
+.proj-link:hover{color:var(--accent-purple-txt)}
 .proj-card:hover .proj-thumb-icon{transform:scale(1.12);transition:transform 0.3s}
 .testi-section{position:relative;background:var(--surface-testi);padding:80px 8vw 70px;clip-path:polygon(0 50px,100% 0,100% calc(100% - 50px),0 100%);margin:-15px 0;z-index:1}
 .testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px;margin-top:44px}
@@ -501,7 +513,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .contact-inner{max-width:580px;margin:0 auto;text-align:center}
 .contact-inner h2{font-family:var(--font-d);font-size:clamp(26px,3.5vw,44px);font-weight:700;margin-bottom:13px;letter-spacing:-1px;color:var(--text)}
 .contact-inner p{color:var(--text-2);font-size:15px;margin-bottom:30px;line-height:1.75}
-.btn-email{display:inline-flex;align-items:center;gap:9px;padding:14px 30px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.32);color:#a5b4fc;border-radius:50px;font-family:var(--font-d);font-size:14.5px;font-weight:600;text-decoration:none;transition:all 0.25s}
+.btn-email{display:inline-flex;align-items:center;gap:9px;padding:14px 30px;background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.32);color:var(--accent-purple-txt);border-radius:50px;font-family:var(--font-d);font-size:14.5px;font-weight:600;text-decoration:none;transition:all 0.25s}
 .btn-email:hover{background:rgba(99,102,241,0.22);border-color:rgba(99,102,241,0.55);color:var(--text);transform:translateY(-2px);box-shadow:0 8px 30px rgba(99,102,241,0.22)}
 footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border);font-size:11.5px;color:var(--text-3)}
 .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -623,7 +635,7 @@ a.re-contact-item:hover{color:#fff}
 .pm-body{padding:24px 28px 28px}
 .pm-desc{font-size:14px;line-height:1.85;color:var(--text-2);margin-bottom:20px}
 .pm-tech-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px}
-.pm-tech{font-size:11.5px;color:#a5b4fc;background:rgba(99,102,241,0.12);padding:4px 11px;border-radius:6px;font-family:var(--font-m)}
+.pm-tech{font-size:11.5px;color:var(--accent-purple-txt);background:rgba(99,102,241,0.12);padding:4px 11px;border-radius:6px;font-family:var(--font-m)}
 .pm-links{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap}
 .pm-link-btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:50px;font-size:13px;font-weight:600;font-family:var(--font-d);text-decoration:none;transition:all 0.2s;letter-spacing:0.2px}
 .pm-link-github{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:var(--text-2)}
@@ -637,7 +649,7 @@ a.re-contact-item:hover{color:#fff}
 .pm-phase.open{border-color:rgba(99,102,241,0.3)}
 .pm-phase-header{display:flex;align-items:center;gap:13px;padding:13px 16px;cursor:pointer;transition:background 0.2s}
 .pm-phase-header:hover{background:rgba(255,255,255,0.02)}
-.pm-phase-num{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(139,92,246,0.12));border:1px solid rgba(99,102,241,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:10.5px;color:#a5b4fc;flex-shrink:0;font-weight:700}
+.pm-phase-num{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,rgba(99,102,241,0.2),rgba(139,92,246,0.12));border:1px solid rgba(99,102,241,0.2);display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:10.5px;color:var(--accent-purple-txt);flex-shrink:0;font-weight:700}
 .pm-phase-title{font-family:var(--font-d);font-size:13.5px;font-weight:600;color:var(--text);flex:1}
 .pm-phase-chevron{color:var(--text-3);font-size:11px;transition:transform 0.25s;flex-shrink:0}
 .pm-phase.open .pm-phase-chevron{transform:rotate(180deg)}
@@ -862,7 +874,6 @@ $headerEmailOb  = obfuscateEmail($headerEmail);
     <h1 class="hero-name"><?= esc($np[0]) ?><br><span class="hero-name-accent"><?= esc($np[1]??'') ?></span></h1>
     <div class="hero-pill"><i class="fas fa-code" style="font-size:10px"></i><?= esc($about['tagline']??'Full-Stack Web Developer') ?></div>
     <div class="cred-row">
-      <span class="cred-badge"><i class="fas fa-check-circle"></i> Civil Service Professional Eligible</span>
       <span class="cred-badge dost"><i class="fas fa-award"></i> DOST Scholar</span>
       <span class="cred-badge award"><i class="fas fa-star"></i> Academic Excellence 2022–2026</span>
     </div>
@@ -1128,7 +1139,7 @@ foreach(($projects ?? []) as $p){
   <div class="proj-modal" style="max-width:520px">
     <div class="pm-header">
       <div class="pm-header-left">
-        <div class="pm-type-tag" style="background:rgba(99,102,241,0.18);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3)">✉ Get In Touch</div>
+        <div class="pm-type-tag" style="background:rgba(99,102,241,0.18);color:var(--accent-purple-txt);border:1px solid rgba(99,102,241,0.3)">✉ Get In Touch</div>
         <div class="pm-title">Send Me a Message</div>
       </div>
       <button class="pm-close" onclick="closeContactModal()"><i class="fas fa-times"></i></button>
@@ -1151,7 +1162,7 @@ foreach(($projects ?? []) as $p){
         <div style="margin-top:16px;background:rgba(255,255,255,0.03);border:1px solid rgba(99,102,241,0.2);border-radius:12px;padding:14px 18px;text-align:left">
           <div style="font-size:12px;color:var(--text-3);font-family:var(--font-m);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Contact Details</div>
           <div style="font-size:13px;color:var(--text);margin-bottom:6px"><i class="fas fa-envelope" style="color:#6366f1;margin-right:8px"></i>evarsanglitanjr.320@gmail.com</div>
-          <div style="font-size:12px;color:var(--text-2);margin-top:8px">You can also find my contact info in the <strong style="color:#a5b4fc">Resume</strong> above.</div>
+          <div style="font-size:12px;color:var(--text-2);margin-top:8px">You can also find my contact info in the <strong style="color:var(--accent-purple-txt)">Resume</strong> above.</div>
         </div>
         <button onclick="closeContactModal()" style="margin-top:20px;padding:10px 24px;background:rgba(99,102,241,0.12);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3);border-radius:50px;font-family:var(--font-d);font-size:13px;font-weight:700;cursor:pointer">Close</button>
       </div>
@@ -1160,7 +1171,7 @@ foreach(($projects ?? []) as $p){
       <div id="contact-error" style="display:none;text-align:center;padding:20px 0">
         <div style="width:60px;height:60px;border-radius:50%;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;color:#ef4444"><i class="fas fa-times-circle"></i></div>
         <div style="font-family:var(--font-d);font-size:18px;font-weight:700;color:var(--text);margin-bottom:8px">Something Went Wrong</div>
-        <div style="font-size:13px;color:var(--text-2);line-height:1.7">Failed to send. Please try again or reach me at <strong style="color:#a5b4fc">evarsanglitanjr.320@gmail.com</strong></div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.7">Failed to send. Please try again or reach me at <strong style="color:var(--accent-purple-txt)">evarsanglitanjr.320@gmail.com</strong></div>
         <button onclick="showContactForm()" style="margin-top:20px;padding:10px 24px;background:rgba(99,102,241,0.12);color:#a5b4fc;border:1px solid rgba(99,102,241,0.3);border-radius:50px;font-family:var(--font-d);font-size:13px;font-weight:700;cursor:pointer;margin-right:8px">Try Again</button>
         <button onclick="closeContactModal()" style="margin-top:20px;padding:10px 24px;background:transparent;color:var(--text-3);border:1px solid var(--border);border-radius:50px;font-family:var(--font-d);font-size:13px;font-weight:700;cursor:pointer">Close</button>
       </div>
@@ -1272,16 +1283,22 @@ const countersEl=document.getElementById('counters');if(countersEl)observer.obse
 
 const PROJECTS={
 <?php
-$typeStyles=['thesis'=>'background:rgba(139,92,246,0.28);color:#d8b4fe;border:1px solid rgba(139,92,246,0.3)','ojt'=>'background:rgba(6,182,212,0.18);color:#67e8f9;border:1px solid rgba(6,182,212,0.25)','lgu'=>'background:rgba(16,185,129,0.16);color:#6ee7b7;border:1px solid rgba(16,185,129,0.22)','personal'=>'background:rgba(251,191,36,0.16);color:#fde68a;border:1px solid rgba(251,191,36,0.22)'];
 $typeLabels=['thesis'=>'★ Thesis','ojt'=>'OJT','lgu'=>'LGU','personal'=>'Personal'];
 foreach($projects as $proj):$cat=$proj['category']??'personal';$projTech=json_decode($proj['tech']??'[]',true)?:[];
-echo $proj['id'].':{'.'type:'.json_encode($typeLabels[$cat]??$cat).',typeStyle:'.json_encode($typeStyles[$cat]??$typeStyles['personal']).',title:'.json_encode($proj['title']).',desc:'.json_encode($proj['description']).',tech:'.json_encode($projTech).',github:'.json_encode($proj['github_url']?:null).',demo:'.json_encode($proj['demo_url']?:null).'},';
+echo $proj['id'].':{'.'cat:'.json_encode($cat).',type:'.json_encode($typeLabels[$cat]??$cat).',title:'.json_encode($proj['title']).',desc:'.json_encode($proj['description']).',tech:'.json_encode($projTech).',github:'.json_encode($proj['github_url']?:null).',demo:'.json_encode($proj['demo_url']?:null).'},';
 endforeach;
 ?>};
 const ALL_PHASES=<?php $allPhasesJs=[];foreach(($allThesisPhases??[])as $pid=>$phases){$allPhasesJs[$pid]=array_map(fn($ph)=>['num'=>$ph['num'],'title'=>$ph['title'],'content'=>$ph['content']],$phases);}echo json_encode($allPhasesJs);?>;
 const ALL_ISO=<?php $allIsoJs=[];foreach(($allIsoScores??[])as $pid=>$scores){$allIsoJs[$pid]=array_map(fn($s)=>['label'=>$s['label'],'score'=>(int)$s['score']],$scores);}echo json_encode($allIsoJs);?>;
 
-function openProject(id){const p=PROJECTS[id];if(!p)return;document.getElementById('pm-type-tag').textContent=p.type;document.getElementById('pm-type-tag').style.cssText=p.typeStyle;document.getElementById('pm-title').textContent=p.title;const projPhases=(ALL_PHASES&&ALL_PHASES[id])?ALL_PHASES[id]:[];const projIso=(ALL_ISO&&ALL_ISO[id])?ALL_ISO[id]:[];let body=`<p class="pm-desc">${p.desc}</p><div class="pm-tech-row">${p.tech.map(t=>`<span class="pm-tech">${t}</span>`).join('')}</div><div class="pm-links">${p.github?`<a href="${p.github}" class="pm-link-btn pm-link-github" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>`:''}${p.demo?`<a href="${p.demo}" class="pm-link-btn pm-link-demo" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>`:''}</div>`;if(projPhases.length>0){body+=`<div class="pm-divider"></div><div class="pm-section-label">Development Methodology</div><div class="pm-accordion">${projPhases.map((ph,i)=>`<div class="pm-phase${i===0?' open':''}"><div class="pm-phase-header" onclick="togglePmPhase(this)"><div class="pm-phase-num">${ph.num}</div><div class="pm-phase-title">${ph.title}</div><i class="fas fa-chevron-down pm-phase-chevron"></i></div><div class="pm-phase-body"><div class="pm-phase-content">${ph.content}</div></div></div>`).join('')}</div>`;}if(projIso.length>0){body+=`<div class="pm-divider"></div><div class="pm-section-label">ISO 25010 Evaluation</div><div class="pm-iso-grid">${projIso.map(s=>`<div class="pm-iso-card"><div class="pm-iso-label">${s.label}</div><div class="pm-iso-bar-bg"><div class="pm-iso-bar-fill" data-w="${s.score}"></div></div><div class="pm-iso-score">${s.score}%</div></div>`).join('')}</div>`;}document.getElementById('pm-body').innerHTML=body;document.getElementById('projModal').classList.add('open');document.body.style.overflow='hidden';if(projIso.length>0){setTimeout(()=>{document.querySelectorAll('.pm-iso-bar-fill[data-w]').forEach((bar,i)=>{setTimeout(()=>{bar.style.width=bar.dataset.w+'%';},i*100);});},200);}}
+function openProject(id){const p=PROJECTS[id];if(!p)return;
+const tagEl=document.getElementById('pm-type-tag');
+tagEl.textContent=p.type;
+tagEl.className='pm-type-tag tag-'+p.cat;
+tagEl.removeAttribute('style');
+document.getElementById('pm-title').textContent=p.title;
+const projPhases=(ALL_PHASES&&ALL_PHASES[id])?ALL_PHASES[id]:[];
+const projIso=(ALL_ISO&&ALL_ISO[id])?ALL_ISO[id]:[];let body=`<p class="pm-desc">${p.desc}</p><div class="pm-tech-row">${p.tech.map(t=>`<span class="pm-tech">${t}</span>`).join('')}</div><div class="pm-links">${p.github?`<a href="${p.github}" class="pm-link-btn pm-link-github" target="_blank"><i class="fab fa-github"></i> View on GitHub</a>`:''}${p.demo?`<a href="${p.demo}" class="pm-link-btn pm-link-demo" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>`:''}</div>`;if(projPhases.length>0){body+=`<div class="pm-divider"></div><div class="pm-section-label">Development Methodology</div><div class="pm-accordion">${projPhases.map((ph,i)=>`<div class="pm-phase${i===0?' open':''}"><div class="pm-phase-header" onclick="togglePmPhase(this)"><div class="pm-phase-num">${ph.num}</div><div class="pm-phase-title">${ph.title}</div><i class="fas fa-chevron-down pm-phase-chevron"></i></div><div class="pm-phase-body"><div class="pm-phase-content">${ph.content}</div></div></div>`).join('')}</div>`;}if(projIso.length>0){body+=`<div class="pm-divider"></div><div class="pm-section-label">ISO 25010 Evaluation</div><div class="pm-iso-grid">${projIso.map(s=>`<div class="pm-iso-card"><div class="pm-iso-label">${s.label}</div><div class="pm-iso-bar-bg"><div class="pm-iso-bar-fill" data-w="${s.score}"></div></div><div class="pm-iso-score">${s.score}%</div></div>`).join('')}</div>`;}document.getElementById('pm-body').innerHTML=body;document.getElementById('projModal').classList.add('open');document.body.style.overflow='hidden';if(projIso.length>0){setTimeout(()=>{document.querySelectorAll('.pm-iso-bar-fill[data-w]').forEach((bar,i)=>{setTimeout(()=>{bar.style.width=bar.dataset.w+'%';},i*100);});},200);}}
 function closeProjModal(){document.getElementById('projModal').classList.remove('open');document.body.style.overflow='';}
 function closeProjModalOnOverlay(e){if(e.target===document.getElementById('projModal'))closeProjModal();}
 function togglePmPhase(header){const phase=header.closest('.pm-phase');const isOpen=phase.classList.contains('open');document.querySelectorAll('.pm-phase').forEach(p=>p.classList.remove('open'));if(!isOpen)phase.classList.add('open');}
