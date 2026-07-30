@@ -79,7 +79,34 @@ body{background:var(--bg);font-family:'DM Sans',sans-serif;color:var(--text);fon
 .stack-card.dragging{opacity:0.4;border-style:dashed}
 .stack-card.drag-over{border-color:var(--accent);background:#eff6ff}
 .stack-card-drag{position:absolute;top:7px;left:8px;color:#d1d5db;font-size:11px;cursor:grab}
-.stack-card-img{width:60px;height:60px;border-radius:12px;background:#f9fafb;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:8px;flex-shrink:0}
+.stack-card-img{
+  width:60px !important;
+  height:60px !important;
+  min-width:60px !important;
+  min-height:60px !important;
+  max-width:60px !important;
+  max-height:60px !important;
+  border-radius:12px;
+  background:#f9fafb;
+  border:1px solid var(--border);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden !important;
+  padding:8px;
+  flex-shrink:0;
+  position:relative;
+}
+.stack-card-img *{
+  max-width:44px !important;
+  max-height:44px !important;
+  width:44px !important;
+  height:44px !important;
+  object-fit:contain !important;
+}
+.stack-card{
+  overflow:hidden !important;
+}
 .stack-card-img img{width:100%;height:100%;object-fit:contain}
 .stack-card-img dotlottie-player{width:44px !important;height:44px !important;max-width:44px !important;max-height:44px !important}
 .stack-card-img img{width:100%;height:100%;object-fit:contain}
@@ -161,6 +188,20 @@ body.dark .upload-file-label{background:rgba(59,130,246,0.08)}
 .dark-toggle{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--border);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--muted);transition:all 0.2s}
 .dark-toggle:hover{border-color:var(--accent);color:var(--accent)}
 body.dark .dark-toggle{background:#111827;border-color:#1e2535;color:#fbbf24}
+
+
+/* Force stack card image sizes */
+.stack-card-img img,
+.stack-card-img dotlottie-player,
+.stack-card-img svg,
+.stack-card-img canvas{
+  width:44px !important;
+  height:44px !important;
+  max-width:44px !important;
+  max-height:44px !important;
+  object-fit:contain !important;
+  display:block !important;
+}
 </style>
 </head>
 <body>
