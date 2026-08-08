@@ -351,11 +351,12 @@ const PROJECTS_LIST = <?php
 let _toastTimer;
 function toast(msg, type='ok') {
   const el = document.getElementById('toast');
-  const icon = type==='ok'
+  const iconHtml = type==='ok'
     ? '<i class="fas fa-check-circle" style="color:#4ade80"></i>'
     : '<i class="fas fa-exclamation-circle" style="color:#f87171"></i>';
   el.className = 'show ' + type;
-  el.innerHTML = icon + '<span>' + msg + '</span>';
+  el.innerHTML = iconHtml + '<span></span>'; // icon is trusted markup, message is not
+  el.querySelector('span').textContent = msg; // textContent = no entity parsing
   clearTimeout(_toastTimer);
   _toastTimer = setTimeout(() => el.className='', 3500);
 }

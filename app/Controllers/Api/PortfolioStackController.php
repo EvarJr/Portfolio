@@ -78,21 +78,27 @@ class PortfolioStackController extends BaseApiController
         $resourceType = $isLottie ? 'raw' : 'image';
 
         // Auto-remove flat/solid backgrounds for actual images (PNG/JPG/GIF).
-        // Tolerance 20 works well for logo-style flat backgrounds; raise it if
-        // edges get left behind, lower it if it starts eating into the artwork.
         $transformation = $isLottie ? '' : 'e_make_transparent:20';
 
-        // Only params that are actually sent get signed — build the signed
-        // param set first (alphabetical order, per Cloudinary's spec).
+        // Build signed params exactly as Cloudinary expects: RAW values,
+        // sorted alphabetically by key, joined as key=value&key=value.
+        // Do NOT use http_build_query — it URL-encodes '/' and ':',
+        // which breaks the signature.
         $signParams = [
-            'folder'    => $folder,
-            'timestamp' => $timestamp,
+            'folder'        => $folder,
+            'resource_type' => $resourceType,
+            'timestamp'     => $timestamp,
         ];
         if ($transformation !== '') {
             $signParams['transformation'] = $transformation;
         }
         ksort($signParams);
-        $sigString = http_build_query($signParams, '', '&');
+
+        $pairs = [];
+        foreach ($signParams as $k => $v) {
+            $pairs[] = "{$k}={$v}";
+        }
+        $sigString = implode('&', $pairs);
         $signature = hash('sha256', $sigString . $apiSecret);
 
         $postFields = [
