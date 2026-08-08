@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= esc($header['name'] ?? 'Portfolio') ?> — <?= esc($about['tagline'] ?? 'Portfolio') ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800;900&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>emailjs.init('ZOuYTOYxO4kTNPnxK');</script>
 <style>
@@ -895,20 +895,25 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
 .tech-logo-wrap img{
   width:100%;height:100%;
   object-fit:contain;
-  filter:grayscale(25%) brightness(0.92);
+  filter:grayscale(15%);
   transition:filter 0.35s;
-}
-.tech-item:hover .tech-logo-wrap{
+  background:transparent;
+}.tech-item:hover .tech-logo-wrap{
   transform:translateY(-12px) scale(1.1);
   border-color:rgba(99,102,241,0.55);
-  background:rgba(99,102,241,0.1);
+  background:rgba(99,102,241,0.08);
   box-shadow:
     0 0 0 1px rgba(99,102,241,0.3),
     0 22px 50px rgba(99,102,241,0.28),
     0 0 40px rgba(139,92,246,0.18);
 }
 .tech-item:hover .tech-logo-wrap img{
-  filter:grayscale(0%) brightness(1);
+  filter:grayscale(0%);
+}
+.tech-logo-wrap dotlottie-player{
+  width:54px !important;
+  height:54px !important;
+  flex-shrink:0;
 }
 
 /* Cloud glow ring */
