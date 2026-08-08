@@ -509,9 +509,16 @@ async function searchIcons(query) {
   _iconSearchTimer = setTimeout(async () => {
     const r = await fetch(BASE + '/api/portfoliostack/search-icons?q=' + encodeURIComponent(query));
     const data = await r.json();
-    const results = data.data ?? data.results ?? [];
+
+    if (!data.success) {
+      box.innerHTML = `<div style="padding:10px;font-size:12px;color:#ef4444">Error: ${escHtml(data.message || 'Unknown error')}</div>`;
+      box.style.display = 'block';
+      return;
+    }
+
+    const results = data.data ?? [];
     if (!results.length) {
-      box.innerHTML = '<div style="padding:10px;font-size:12px;color:var(--muted)">No icons found.</div>';
+      box.innerHTML = '<div style="padding:10px;font-size:12px;color:var(--muted)">No icons matched.</div>';
       box.style.display = 'block';
       return;
     }

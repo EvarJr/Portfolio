@@ -109,4 +109,81 @@ class PortfolioStackController extends BaseApiController
         $m->update($id, ['image_url' => $finalUrl]);
         return $this->jsonSuccess(['url' => $finalUrl], 'File uploaded.');
     }
+
+    public function searchIcons(): \CodeIgniter\HTTP\ResponseInterface
+    {
+        $query = trim((string) $this->request->getGet('q'));
+        if ($query === '' || strlen($query) < 2) {
+            return $this->jsonSuccess([]);
+        }
+
+        $cacheFile = WRITEPATH . 'cache/simple-icons-index.json';
+        $index     = null;
+
+        if (is_file($cacheFile) && (time() - filemtime($cacheFile)) < 7 * 24 * 60 * 60) {
+            $index = json_decode(file_get_contents($cacheFile), true);
+        }
+
+        if (!$index) {
+            $ch = curl_init('https://cdn.jsdelivr.net/npm/simple-icons@latest/_data/simple-icons.json');
+            curl_setopt_array($ch, [
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_TIMEOUT        => 15,
+                CURLOPT_SSL_VERIFYPEER => true,
+            ]);
+            $raw     = curl_exec($ch);
+            $curlErr = curl_error($ch);
+            $status  = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            if ($raw === false || $curlErr) {
+                return $this->jsonError('Could not reach icon index: ' . $curlErr);
+            }
+            if ($status !== 200) {
+                return $this->jsonError('Icon index returned HTTP ' . $status);
+            }
+
+            $decoded = json_decode($raw, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return $this->jsonError('Icon index returned invalid JSON.');
+            }
+
+            $icons = $decoded['icons'] ?? [];
+            if (empty($icons)) {
+                return $this->jsonError('Icon index was empty — unexpected response shape.');
+            }
+
+            $index = array_map(fn($i) => [
+                'title' => $i['title'] ?? '',
+                'slug'  => $i['slug']  ?? $this->slugifyTitle($i['title'] ?? ''),
+            ], $icons);
+
+            if (!is_dir(dirname($cacheFile))) {
+                mkdir(dirname($cacheFile), 0755, true);
+            }
+            file_put_contents($cacheFile, json_encode($index));
+        }
+
+        $q = strtolower($query);
+        $matches = array_values(array_filter($index, fn($i) => str_contains(strtolower($i['title']), $q)));
+
+        usort($matches, fn($a, $b) =>
+            stripos($a['title'], $q) === 0 ? -1 : (stripos($b['title'], $q) === 0 ? 1 : 0)
+        );
+
+        $results = array_slice($matches, 0, 8);
+        $results = array_map(fn($i) => [
+            'title'   => $i['title'],
+            'slug'    => $i['slug'],
+            'svg_url' => "https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/{$i['slug']}.svg",
+        ], $results);
+
+        return $this->jsonSuccess($results);
+    }
+
+    private function slugifyTitle(string $title): string
+    {
+        return preg_replace('/[^a-z0-9]+/', '', strtolower($title));
+    }
+
 }
