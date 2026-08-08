@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?= esc($header['name'] ?? 'Portfolio') ?> — <?= esc($about['tagline'] ?? 'Portfolio') ?></title>
 <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Cabinet+Grotesk:wght@300;400;500;700;800;900&family=DM+Mono:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 <script>emailjs.init('ZOuYTOYxO4kTNPnxK');</script>
 <style>
@@ -885,7 +885,7 @@ footer{background:var(--ink);padding:20px 8vw;border-top:1px solid var(--border)
 .tech-logo-wrap{
   width:78px;height:78px;
   border-radius:20px;
-  background:rgba(255,255,255,0.03);
+  background:transparent;
   border:1px solid rgba(255,255,255,0.07);
   display:flex;align-items:center;justify-content:center;
   overflow:hidden;padding:12px;

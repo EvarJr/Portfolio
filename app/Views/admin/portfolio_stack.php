@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Portfolio Stack — Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
 <style>
 :root{
   --bg:#f0f2f5;--sidebar-w:245px;
@@ -191,17 +191,7 @@ body.dark .dark-toggle{background:#111827;border-color:#1e2535;color:#fbbf24}
 
 
 /* Force stack card image sizes */
-.stack-card-img img,
-.stack-card-img dotlottie-player,
-.stack-card-img svg,
-.stack-card-img canvas{
-  width:44px !important;
-  height:44px !important;
-  max-width:44px !important;
-  max-height:44px !important;
-  object-fit:contain !important;
-  display:block !important;
-}
+
 </style>
 </head>
 <body>
