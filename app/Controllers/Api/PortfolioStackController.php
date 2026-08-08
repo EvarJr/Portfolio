@@ -77,22 +77,42 @@ class PortfolioStackController extends BaseApiController
         $isLottie     = $ext === 'json';
         $resourceType = $isLottie ? 'raw' : 'image';
 
-        $sigString = "folder={$folder}&resource_type={$resourceType}&timestamp={$timestamp}";
+        // Auto-remove flat/solid backgrounds for actual images (PNG/JPG/GIF).
+        // Tolerance 20 works well for logo-style flat backgrounds; raise it if
+        // edges get left behind, lower it if it starts eating into the artwork.
+        $transformation = $isLottie ? '' : 'e_make_transparent:20';
+
+        // Only params that are actually sent get signed — build the signed
+        // param set first (alphabetical order, per Cloudinary's spec).
+        $signParams = [
+            'folder'    => $folder,
+            'timestamp' => $timestamp,
+        ];
+        if ($transformation !== '') {
+            $signParams['transformation'] = $transformation;
+        }
+        ksort($signParams);
+        $sigString = http_build_query($signParams, '', '&');
         $signature = hash('sha256', $sigString . $apiSecret);
+
+        $postFields = [
+            'file'          => new \CURLFile($file->getTempName(), $file->getMimeType(), $file->getClientName()),
+            'api_key'       => $apiKey,
+            'timestamp'     => $timestamp,
+            'folder'        => $folder,
+            'resource_type' => $resourceType,
+            'signature'     => $signature,
+        ];
+        if ($transformation !== '') {
+            $postFields['transformation'] = $transformation;
+        }
 
         $ch = curl_init("https://api.cloudinary.com/v1_1/{$cloudName}/{$resourceType}/upload");
         curl_setopt_array($ch, [
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST           => true,
             CURLOPT_TIMEOUT        => 60,
-            CURLOPT_POSTFIELDS     => [
-                'file'          => new \CURLFile($file->getTempName(), $file->getMimeType(), $file->getClientName()),
-                'api_key'       => $apiKey,
-                'timestamp'     => $timestamp,
-                'folder'        => $folder,
-                'resource_type' => $resourceType,
-                'signature'     => $signature,
-            ],
+            CURLOPT_POSTFIELDS     => $postFields,
         ]);
         $response = curl_exec($ch);
         $curlErr  = curl_error($ch);
@@ -103,7 +123,6 @@ class PortfolioStackController extends BaseApiController
         if(empty($result['secure_url']))
             return $this->jsonError('Cloudinary error: ' . ($result['error']['message'] ?? 'Unknown'));
 
-        // For Lottie JSON, mark URL so frontend knows it's a Lottie file
         $finalUrl = $result['secure_url'];
 
         $m->update($id, ['image_url' => $finalUrl]);
