@@ -406,6 +406,13 @@ function buildPanelForm(stack) {
           <input type="text" id="img-url-input" placeholder="Paste image URL..."
             value="${imageUrl}" oninput="previewUrl(this.value)"
             style="font-size:12px;padding:7px 10px">
+          <div class="or-text">— OR —</div>
+          <div style="position:relative">
+            <input type="text" id="icon-search-input" placeholder="Search icons (e.g. React, Vue)..."
+              oninput="searchIcons(this.value)"
+              style="font-size:12px;padding:7px 10px;width:100%">
+            <div id="icon-search-results" style="display:none;position:absolute;top:100%;left:0;right:0;z-index:10;background:#fff;border:1.5px solid var(--border);border-radius:7px;margin-top:4px;max-height:180px;overflow-y:auto;box-shadow:0 6px 18px rgba(0,0,0,0.12)"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -488,6 +495,43 @@ function previewUrl(url) {
   } else {
     updatePreview(url);
   }
+}
+
+let _iconSearchTimer;
+async function searchIcons(query) {
+  clearTimeout(_iconSearchTimer);
+  const box = document.getElementById('icon-search-results');
+  if (!query || query.trim().length < 2) {
+    box.style.display = 'none';
+    box.innerHTML = '';
+    return;
+  }
+  _iconSearchTimer = setTimeout(async () => {
+    const r = await fetch(BASE + '/api/portfoliostack/search-icons?q=' + encodeURIComponent(query));
+    const data = await r.json();
+    const results = data.data ?? data.results ?? [];
+    if (!results.length) {
+      box.innerHTML = '<div style="padding:10px;font-size:12px;color:var(--muted)">No icons found.</div>';
+      box.style.display = 'block';
+      return;
+    }
+    box.innerHTML = results.map(icon => `
+      <div class="proj-check-item" style="cursor:pointer" onclick='selectIcon(${JSON.stringify(icon.svg_url)}, ${JSON.stringify(icon.title)})'>
+        <img src="${icon.svg_url}" style="width:18px;height:18px;object-fit:contain;flex-shrink:0">
+        <label style="cursor:pointer">${icon.title}</label>
+      </div>
+    `).join('');
+    box.style.display = 'block';
+  }, 300);
+}
+
+function selectIcon(svgUrl, title) {
+  uploadedImageUrl = svgUrl;
+  updatePreview(svgUrl);
+  document.getElementById('icon-search-results').style.display = 'none';
+  document.getElementById('icon-search-input').value = title;
+  const nameInput = document.getElementById('tech-name-input');
+  if (nameInput && !nameInput.value.trim()) nameInput.value = title;
 }
 
 function updatePreview(src) {

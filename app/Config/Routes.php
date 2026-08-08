@@ -128,4 +128,5 @@ $routes->post('api/portfoliostack/update/(:num)',        'Api\PortfolioStackCont
 $routes->post('api/portfoliostack/delete/(:num)',        'Api\PortfolioStackController::delete/$1');
 $routes->post('api/portfoliostack/reorder',             'Api\PortfolioStackController::reorder');
 $routes->post('api/portfoliostack/upload/(:num)',        'Api\PortfolioStackController::uploadImage/$1');
+$routes->get('api/portfoliostack/search-icons',          'Api\PortfolioStackController::searchIcons');
 
