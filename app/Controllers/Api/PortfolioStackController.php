@@ -148,7 +148,13 @@ class PortfolioStackController extends BaseApiController
                 return $this->jsonError('Icon index returned invalid JSON.');
             }
 
-            $icons = $decoded['icons'] ?? [];
+            // The published file is a flat array of icon objects — NOT wrapped
+            // in an {"icons": [...]} key. Handle both shapes just in case a
+            // future version changes this, but the flat array is what's live today.
+            $icons = is_array($decoded) && isset($decoded['icons'])
+                ? $decoded['icons']
+                : $decoded;
+
             if (empty($icons)) {
                 return $this->jsonError('Icon index was empty — unexpected response shape.');
             }
